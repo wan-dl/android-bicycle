@@ -8,18 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
-		63A81BA82A7BF5ED00839E7B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* ContentView.swift */; };
+		63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* Main.swift */; };
 		63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BA92A7BF5EE00839E7B /* Assets.xcassets */; };
 		63A81BAD2A7BF5EE00839E7B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BAC2A7BF5EE00839E7B /* Preview Assets.xcassets */; };
+		63A81BB62A7BF64500839E7B /* sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BB52A7BF64500839E7B /* sidebar.swift */; };
+		63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BB72A7BF67400839E7B /* EmptyView.swift */; };
+		63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */; };
+		63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */; };
+		63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BBE2A7BF6D000839E7B /* run_command.swift */; };
+		63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */; };
+		63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC32A7BF71800839E7B /* EmulatorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aBicycleApp.swift; sourceTree = "<group>"; };
-		63A81BA72A7BF5ED00839E7B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		63A81BA72A7BF5ED00839E7B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		63A81BA92A7BF5EE00839E7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63A81BAC2A7BF5EE00839E7B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		63A81BAE2A7BF5EE00839E7B /* aBicycle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = aBicycle.entitlements; sourceTree = "<group>"; };
+		63A81BB52A7BF64500839E7B /* sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sidebar.swift; sourceTree = "<group>"; };
+		63A81BB72A7BF67400839E7B /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmd_emulator.swift; sourceTree = "<group>"; };
+		63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmd_adb.swift; sourceTree = "<group>"; };
+		63A81BBE2A7BF6D000839E7B /* run_command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = run_command.swift; sourceTree = "<group>"; };
+		63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbLogcatView.swift; sourceTree = "<group>"; };
+		63A81BC32A7BF71800839E7B /* EmulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +66,11 @@
 		63A81BA42A7BF5ED00839E7B /* aBicycle */ = {
 			isa = PBXGroup;
 			children = (
+				63A81BC02A7BF6DE00839E7B /* Views */,
+				63A81BB92A7BF68E00839E7B /* Utils */,
+				63A81BB42A7BF63600839E7B /* Extensions */,
 				63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */,
-				63A81BA72A7BF5ED00839E7B /* ContentView.swift */,
+				63A81BA72A7BF5ED00839E7B /* Main.swift */,
 				63A81BA92A7BF5EE00839E7B /* Assets.xcassets */,
 				63A81BAE2A7BF5EE00839E7B /* aBicycle.entitlements */,
 				63A81BAB2A7BF5EE00839E7B /* Preview Content */,
@@ -67,6 +84,34 @@
 				63A81BAC2A7BF5EE00839E7B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		63A81BB42A7BF63600839E7B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				63A81BB52A7BF64500839E7B /* sidebar.swift */,
+				63A81BB72A7BF67400839E7B /* EmptyView.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		63A81BB92A7BF68E00839E7B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */,
+				63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */,
+				63A81BBE2A7BF6D000839E7B /* run_command.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		63A81BC02A7BF6DE00839E7B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */,
+				63A81BC32A7BF71800839E7B /* EmulatorView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,8 +184,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63A81BA82A7BF5ED00839E7B /* ContentView.swift in Sources */,
+				63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */,
+				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
+				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
+				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
+				63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */,
+				63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */,
 				63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */,
+				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
+				63A81BB62A7BF64500839E7B /* sidebar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,11 +326,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Android Command Bicycle";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wan.aBicycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -301,11 +356,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Android Command Bicycle";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wan.aBicycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
