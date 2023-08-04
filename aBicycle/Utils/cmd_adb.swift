@@ -124,8 +124,8 @@ class ADB {
         
         var allPackageList: [String] = []
         allPackageList = outputList.map { $0.hasPrefix("package:") ? String($0.dropFirst("package:".count)) : $0 }
-        allPackageList.sort()
-        return allPackageList
+        var lastData = allPackageList.sorted().filter { $0 != "" }.reversed()
+        return Array(lastData)
     }
 }
 
