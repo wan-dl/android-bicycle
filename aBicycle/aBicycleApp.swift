@@ -15,12 +15,12 @@ struct aBicycleApp: App {
         WindowGroup {
             MainView()
         }
-//        .windowToolbarStyle(UnifiedWindowToolbarStyle(showsTitle: false))
-//        .commands {
-//            CommandMenu("") {
-//                Button("New", action: {})
-//            }
-//        }
+        
+        #if os(macOS)
+        Settings {
+            SettingsView()
+        }
+        #endif
     }
 }
 
