@@ -11,7 +11,7 @@ import Foundation
  运行简单的一些shell命令。
  即shell命令执行后，立即结束获取到结果。
  */
-func run_simple_command(executableURL: String, arguments: [String], action: String = "") throws -> [String]? {
+func run_simple_command(executableURL: String, arguments: [String], action: String = "") async throws -> [String]? {
     let processInfo = ProcessInfo.processInfo
     let environment = processInfo.environment
     var shellPath = environment["SHELL"]  ?? ""

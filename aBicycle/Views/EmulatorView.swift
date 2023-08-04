@@ -35,7 +35,6 @@ struct EmulatorView: View {
             
             if (avdsList.count != 0) {
                 show_emulator_list
-//                    .padding(.vertical, 20)
                     .padding(.horizontal, 10)
             }
         }

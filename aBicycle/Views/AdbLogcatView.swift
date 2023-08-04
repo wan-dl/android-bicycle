@@ -38,11 +38,9 @@ struct AdbLogcatView: View {
                 ScrollView {
                     Text(logcatOutput)
                 }
-                .padding()
             }
         }
         .padding(.vertical, 20)
-        .padding(.horizontal, 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
         .contextMenu {
@@ -93,6 +91,7 @@ struct AdbLogcatView: View {
             }
             .disabled(selectedDevice.isEmpty ? true : false)
         }
+        .padding(.horizontal, 20)
     }
     
     // 右键菜单
@@ -109,7 +108,7 @@ struct AdbLogcatView: View {
     func getDeivces() {
         Task(priority: .medium) {
             do {
-                let output = try ADB.adbDevices()
+                let output = try await ADB.adbDevices()
                 DispatchQueue.main.async {
                     self.AndroidDeviceList = []
                     if !output.isEmpty {
@@ -136,7 +135,7 @@ struct AdbLogcatView: View {
         }
         Task(priority: .medium) {
             do {
-                let output = try ADB.packageList(serialno: self.currentSerialno)
+                let output = try await ADB.packageList(serialno: self.currentSerialno)
                 self.currentDeviceAllPackageList = [""]
                 if !output.isEmpty {
                     self.currentDeviceAllPackageList.append(contentsOf: output)
@@ -164,32 +163,34 @@ struct AdbLogcatView: View {
     
     // 点击运行adb logcat
     func clickLogcat() {
-        if self.isLaunchLogcat == false {
-            if self.AndroidDeviceList.isEmpty {
-                return
-            }
-            
-            var logcatOptions: [String] = []
-            if self.selectedPriority.rawValue != "All" {
-                if let priority = self.selectedPriority.rawValue.first {
-                    logcatOptions.append("':\(String(priority))'")
+        Task {
+            if self.isLaunchLogcat == false {
+                if self.AndroidDeviceList.isEmpty {
+                    return
                 }
+                
+                var logcatOptions: [String] = []
+                if self.selectedPriority.rawValue != "All" {
+                    if let priority = self.selectedPriority.rawValue.first {
+                        logcatOptions.append("':\(String(priority))'")
+                    }
+                }
+                if self.selectedPackageName.contains(".") {
+                    logcatOptions.append("-s")
+                    logcatOptions.append(self.selectedPackageName)
+                }
+                
+                self.isLaunchLogcat.toggle()
+                do {
+                    try await logcat.run(serialno: currentSerialno, logcatOptions: logcatOptions)
+                    observeLogcatOutput()
+                } catch {
+                    print("Error: \(error)")
+                }
+            } else {
+                self.isLaunchLogcat.toggle()
+                logcat.stop()
             }
-            if self.selectedPackageName.contains(".") {
-                logcatOptions.append("-s")
-                logcatOptions.append(self.selectedPackageName)
-            }
-            
-            self.isLaunchLogcat.toggle()
-            do {
-                try logcat.run(serialno: currentSerialno, logcatOptions: logcatOptions)
-                observeLogcatOutput()
-            } catch {
-                print("Error: \(error)")
-            }
-        } else {
-            self.isLaunchLogcat.toggle()
-            logcat.stop()
         }
     }
     

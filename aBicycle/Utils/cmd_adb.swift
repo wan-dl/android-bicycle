@@ -71,23 +71,23 @@ class ADB {
     static var osAdbPath: String?
     
     // 查找adb路径
-    static func getAdbPath() throws -> String {
+    static func getAdbPath() async throws -> String {
         if let path = osAdbPath {
             return path
         }
-        let adbPath = try run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
+        let adbPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
         if adbPath.isEmpty {
             throw ADBError.NotFoundADB
         }
         osAdbPath = adbPath
+        print("[adbPath]", adbPath)
         return osAdbPath!
     }
     
     // 执行：adb devices -l
-    static func adbDevices() throws -> [AndroidDeviceItem] {
-        let adbPath = try getAdbPath()
-        
-        guard let outputList = try run_simple_command(executableURL: adbPath, arguments: ["devices", "-l"]) else {
+    static func adbDevices() async throws -> [AndroidDeviceItem] {
+        let adbPath = try await getAdbPath()
+        guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: ["devices", "-l"]) else {
             throw ADBError.AdbExecutionFailed
         }
         if outputList.count == 1 {
@@ -111,10 +111,10 @@ class ADB {
     }
     
     // 通过设备ID获取所有包名
-    static func packageList(serialno: String) throws -> [String] {
-        let adbPath = try getAdbPath()
+    static func packageList(serialno: String) async throws -> [String] {
+        let adbPath = try await getAdbPath()
         let args = ["-s", serialno, "shell", "pm", "list", "packages"]
-        guard let outputList = try run_simple_command(executableURL: adbPath, arguments: args) else {
+        guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: args) else {
             throw ADBError.AdbExecutionFailed
         }
         
@@ -124,7 +124,7 @@ class ADB {
         
         var allPackageList: [String] = []
         allPackageList = outputList.map { $0.hasPrefix("package:") ? String($0.dropFirst("package:".count)) : $0 }
-        var lastData = allPackageList.sorted().filter { $0 != "" }.reversed()
+        let lastData = allPackageList.sorted().filter { $0 != "" }.reversed()
         return Array(lastData)
     }
 }
@@ -148,14 +148,14 @@ class AdbLogcat: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func run(serialno: String, logcatOptions: [String]) throws {
+    func run(serialno: String, logcatOptions: [String]) async throws {
         
         var args: [String] = ["-s", serialno, "logcat", "-v", "color"]
         if !logcatOptions.isEmpty {
             args.append(contentsOf: logcatOptions)
         }
         
-        let adbPath = try ADB.getAdbPath()
+        let adbPath = try await ADB.getAdbPath()
         let task = Process()
         task.executableURL = URL(fileURLWithPath: adbPath)
         task.arguments = args
