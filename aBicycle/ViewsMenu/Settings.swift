@@ -62,13 +62,24 @@ struct SettingsGeneralView: View {
     
     func updateChange(key: String, value: String) {
         print("TextField 内容变化：\(key) \(value)")
+        
+        if key == "ConfigADBPath" && !isPathValid(value, endsWith: "adb") {
+            _ = showAlert(title: "Error", msg: "ADB路径无效", ConfirmBtnText: "")
+            return
+        }
+        
+        if key == "ConfigEmulatorPath" && !isPathValid(value, endsWith: "emulator") {
+            _ = showAlert(title: "Error", msg: "emulator路径无效", ConfirmBtnText: "")
+            return
+        }
+        
         do {
             let writeResult = try SettingsHandler.writeJsonFile(key: key, value: value)
             if !writeResult {
                 
             }
         } catch {
-            print(error)
+            _ = showAlert(title: "Error", msg: "保存配置发生错误", ConfirmBtnText: "")
         }
     }
     
@@ -84,7 +95,7 @@ struct SettingsGeneralView: View {
                 }
             }
         } catch {
-            print("error", error)
+            _ = showAlert(title: "Error", msg: "读取自定义配置发生错误", ConfirmBtnText: "")
         }
     }
 }
