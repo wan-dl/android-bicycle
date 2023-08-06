@@ -33,7 +33,6 @@ func getAppSupportDirectoryPath() throws -> String {
     guard let appName = getApplicationName() else {
         throw AppSettingsError.getAppNameError
     }
-    print("[appName]......\(appName)")
     
     do {
         let applicationSupportURLs = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)

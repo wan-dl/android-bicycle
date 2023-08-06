@@ -10,6 +10,7 @@ import Foundation
 enum EmulatorError: Error {
     case executionFailed
     case emulatorPathNotFound
+    case emulatorPathValid
     case NotFoundemulator
     case FailedToGetProcessInfo
     case FailedToGetProcessID
@@ -22,6 +23,8 @@ func getErrorMessage(etype: EmulatorError) -> String {
         return "Emulator command execution failed."
     case .emulatorPathNotFound:
         return "Emulator Path Not Found."
+    case .emulatorPathValid:
+        return "Emulator Path is Vaild."
     case .NotFoundemulator:
         return "The emulator list is empty."
     case .FailedToGetProcessInfo:
@@ -33,78 +36,47 @@ func getErrorMessage(etype: EmulatorError) -> String {
     }
 }
 
-func runCommand(executableURL: String, arguments: [String], action: String = "") throws -> [String]? {
-    let processInfo = ProcessInfo.processInfo
-    let environment = processInfo.environment
-    var shellPath = environment["SHELL"]  ?? ""
-    if (executableURL != "") {
-        shellPath = executableURL
-    }
-    
-    let process = Process()
-    process.environment = environment
-    process.executableURL = URL(fileURLWithPath: shellPath)
-    process.arguments = arguments
-//    process.terminationHandler = { (process) in
-//       print("\ndidFinish: \(!process.isRunning)")
-//    }
-    
-    let pipe = Pipe()
-    process.standardOutput = pipe
-
-    do {
-        try process.run()
-        
-        if action != "" {
-            let outHandle = pipe.fileHandleForReading
-            var outputLines: [String] = []
-            
-            while process.isRunning {
-                let data = outHandle.availableData
-                if data.count != 0 {
-                    // 将二进制数据data转换成String，并去除开头和结尾的换行符，得到一个可选类型的String?
-                    let line = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines) ?? ""
-                    if !line.isEmpty {
-                        outputLines.append(line)
-                        if line.contains("ERROR   | Unknown AVD name") || line.contains("INFO    | Started GRPC server at") {
-                            break
-                        }
-                    }
-                }
-            }
-            return outputLines
-        }
-        
-        
-        process.waitUntilExit()
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        guard process.terminationStatus == 0 else {
-            return nil
-        }
-
-        let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines)
-        let outPutList = output?.components(separatedBy: .newlines) ?? []
-        return outPutList
-    } catch let error {
-        throw error
-    }
-}
-
 
 class AndroidEmulatorManager {
     static var osEmulatorPath: String?
     
-    // 获取模拟器列表
-    static func getEmulatorList() async throws -> [String] {
+    static func readSetting() -> String? {
+        do {
+            let fileContent: [String: Any] = try SettingsHandler.readJsonFileAll(defaultValue: [:])
+            if !fileContent.isEmpty {
+                if let emualtorPath = fileContent["ConfigEmulatorPath"] as? String {
+                    return String(emualtorPath)
+                }
+            }
+            return nil
+        } catch {
+            return nil
+        }
+    }
+    
+    // 查找emulator路径
+    static func getEmulatorPath() async throws -> String {
         if osEmulatorPath == nil {
-            osEmulatorPath = try runCommand(executableURL: "", arguments: ["-c", "-l", "which emulator"])?.first ?? ""
+            let readResult = readSetting()
+            if readResult == nil {
+                osEmulatorPath = try runCommand(executableURL: "", arguments: ["-c", "-l", "which emulator"])?.first ?? ""
+            } else {
+                osEmulatorPath = readResult
+            }
             if osEmulatorPath!.isEmpty {
                 throw EmulatorError.emulatorPathNotFound
             }
+            if !isPathValid(osEmulatorPath!, endsWith: "emulator") {
+                throw EmulatorError.emulatorPathValid
+            }
             print("path: \(osEmulatorPath!)")
         }
-        
+        return osEmulatorPath!
+    }
+    
+    // 获取模拟器列表
+    static func getEmulatorList() async throws -> [String] {
+        let _ = try await getEmulatorPath()
         guard let emulatorLists = try runCommand(executableURL: osEmulatorPath!, arguments: ["-list-avds"]) else {
             throw EmulatorError.NotFoundemulator
         }
@@ -139,7 +111,7 @@ class AndroidEmulatorManager {
         let args = ["-dns-server", "223.5.5.5", "-no-snapshot-save", "-avd", emulatorName]
         DispatchQueue.global(qos: .background).async {
             do {
-                guard let emulatorLists = try runCommand(executableURL: osEmulatorPath!, arguments: args, action: "start") else {
+                guard (try runCommand(executableURL: osEmulatorPath!, arguments: args, action: "start")) != nil else {
                     throw EmulatorError.NotFoundemulator
                 }
                 DispatchQueue.main.async {

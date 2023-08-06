@@ -18,6 +18,7 @@
 		63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BBE2A7BF6D000839E7B /* run_command.swift */; };
 		63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */; };
 		63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC32A7BF71800839E7B /* EmulatorView.swift */; };
+		63BBF6802A7F541E00C2621B /* utis_path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BBF67F2A7F541E00C2621B /* utis_path.swift */; };
 		63C236E32A7D505E0019466C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C236E22A7D505E0019466C /* Settings.swift */; };
 		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
@@ -38,6 +39,7 @@
 		63A81BBE2A7BF6D000839E7B /* run_command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = run_command.swift; sourceTree = "<group>"; };
 		63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbLogcatView.swift; sourceTree = "<group>"; };
 		63A81BC32A7BF71800839E7B /* EmulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorView.swift; sourceTree = "<group>"; };
+		63BBF67F2A7F541E00C2621B /* utis_path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utis_path.swift; sourceTree = "<group>"; };
 		63C236E22A7D505E0019466C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */,
 				63A81BBE2A7BF6D000839E7B /* run_command.swift */,
 				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
+				63BBF67F2A7F541E00C2621B /* utis_path.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
 				63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */,
 				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
+				63BBF6802A7F541E00C2621B /* utis_path.swift in Sources */,
 				63C236E32A7D505E0019466C /* Settings.swift in Sources */,
 				63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */,
 				63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */,

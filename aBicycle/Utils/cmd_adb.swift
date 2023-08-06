@@ -18,6 +18,7 @@ struct AndroidDeviceItem: Identifiable, Hashable {
 
 enum ADBError: Error {
     case NotFoundADB
+    case AdbPathValid
     case AdbExecutionFailed
 }
 
@@ -26,6 +27,8 @@ func getADBErrorMessage(etype: ADBError) -> String {
     switch(etype) {
     case .NotFoundADB:
         return "ADB Path Not Found."
+    case .AdbPathValid:
+        return "ADB PATH is Vaild."
     case .AdbExecutionFailed:
         return "adb command execution failed"
     }
@@ -70,17 +73,41 @@ func extractAndroidModel(from input: String) -> String? {
 class ADB {
     static var osAdbPath: String?
     
+    static func readSetting() -> String? {
+        do {
+            let fileContent: [String: Any] = try SettingsHandler.readJsonFileAll(defaultValue: [:])
+            if !fileContent.isEmpty {
+                if let adbPath = fileContent["ConfigADBPath"] as? String {
+                    return adbPath
+                }
+            }
+            return nil
+        } catch {
+            return nil
+        }
+    }
+    
     // 查找adb路径
     static func getAdbPath() async throws -> String {
         if let path = osAdbPath {
             return path
         }
-        let adbPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
-        if adbPath.isEmpty {
+        
+        let readResult = readSetting()
+        print("[readResult]", readResult)
+        if readResult == nil {
+            osAdbPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
+        } else {
+            osAdbPath = readResult
+        }
+        
+        if osAdbPath!.isEmpty {
             throw ADBError.NotFoundADB
         }
-        osAdbPath = adbPath
-        print("[adbPath]", adbPath)
+        if !isPathValid(osAdbPath!, endsWith: "adb") {
+            throw ADBError.AdbPathValid
+        }
+        print("[adbPath]", osAdbPath)
         return osAdbPath!
     }
     

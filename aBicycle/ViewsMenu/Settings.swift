@@ -64,6 +64,9 @@ struct SettingsGeneralView: View {
         print("TextField 内容变化：\(key) \(value)")
         do {
             let writeResult = try SettingsHandler.writeJsonFile(key: key, value: value)
+            if !writeResult {
+                
+            }
         } catch {
             print(error)
         }
