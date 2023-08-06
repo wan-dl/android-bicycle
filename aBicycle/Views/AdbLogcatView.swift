@@ -124,7 +124,7 @@ struct AdbLogcatView: View {
                 }
             } catch let error {
                 let msg = getADBErrorMessage(etype: error as! ADBError)
-                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
+                showAlertOnlyPrompt(title: "Error", msg: msg)
             }
         }
     }
@@ -143,7 +143,7 @@ struct AdbLogcatView: View {
                 }
             } catch {
                 let msg = getADBErrorMessage(etype: error as! ADBError)
-                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
+                showAlertOnlyPrompt(title: "Error", msg: msg)
             }
         }
     }

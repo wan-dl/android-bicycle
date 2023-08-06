@@ -75,8 +75,8 @@ struct SettingsGeneralView: View {
         
         do {
             let writeResult = try SettingsHandler.writeJsonFile(key: key, value: value)
-            if !writeResult {
-                
+            if writeResult {
+                isChangeAppSettingsValue = true
             }
         } catch {
             _ = showAlert(title: "Error", msg: "保存配置发生错误", ConfirmBtnText: "")

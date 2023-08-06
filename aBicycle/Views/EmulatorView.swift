@@ -143,12 +143,22 @@ struct EmulatorView: View {
                     for i in output {
                         avdsList.append(DeviceItem(name: i))
                     }
-                    self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: output)
+                    await getStartedEmulator(allEmulator: output)
                 }
             } catch let error {
                 let msg = getErrorMessage(etype: error as! EmulatorError)
-                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
+                showAlertOnlyPrompt(title: "Error", msg: msg)
             }
+        }
+    }
+    
+    // 获取激活的模拟器列表
+    func getStartedEmulator(allEmulator: [String]) async {
+        do {
+            self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: allEmulator)
+        } catch let error {
+            let msg = getErrorMessage(etype: error as! EmulatorError)
+            showAlertOnlyPrompt(title: "Error", msg: msg)
         }
     }
     
@@ -163,7 +173,7 @@ struct EmulatorView: View {
                 activeEmulatorList.append(avdName)
             } else if let error = error {
                 let msg = getErrorMessage(etype: error as! EmulatorError)
-                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
+                showAlertOnlyPrompt(title: "Error", msg: msg)
             }
         }
     }
@@ -183,7 +193,7 @@ struct EmulatorView: View {
             }
         } catch {
             let msg = getErrorMessage(etype: error as! EmulatorError)
-            _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
+            showAlertOnlyPrompt(title: "Error", msg: msg)
         }
         
     }

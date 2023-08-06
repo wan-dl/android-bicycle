@@ -30,17 +30,21 @@ func showAlert(title: String, msg: String, ConfirmBtnText: String, CancelBtnText
 
 
 
-func showAlertOnlyPrompt(msgType: String, title: String, msg: String, ConfirmBtnText: String) -> Bool {
-    let alert = NSAlert()
-    if msgType == "warning" {
-        alert.alertStyle = .critical
+func showAlertOnlyPrompt(msgType: String? = nil, title: String, msg: String, confirmBtnText: String? = "OK") {
+    DispatchQueue.main.async {
+        let alert = NSAlert()
+        if msgType == "warning" {
+            alert.alertStyle = .critical
+        }
+        if title != "" {
+            alert.messageText = title
+        }
+        alert.informativeText = msg
+        
+        if let buttonText = confirmBtnText {
+            alert.addButton(withTitle: buttonText)
+        }
+        
+        _ = alert.runModal()
     }
-    if title != "" {
-        alert.messageText = title
-    }
-    alert.informativeText = msg
-    alert.addButton(withTitle: ConfirmBtnText)
-    
-    _ = alert.runModal()
-    return false
 }

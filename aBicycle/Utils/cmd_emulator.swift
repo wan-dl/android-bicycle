@@ -11,7 +11,9 @@ enum EmulatorError: Error {
     case executionFailed
     case emulatorPathNotFound
     case emulatorPathValid
-    case NotFoundemulator
+    case emulatorCustomPathValid
+    case NotFoundEmulator
+    case NotFoundActiveEmulator
     case FailedToGetProcessInfo
     case FailedToGetProcessID
     case FailedToKillProcess
@@ -25,8 +27,12 @@ func getErrorMessage(etype: EmulatorError) -> String {
         return "Emulator Path Not Found."
     case .emulatorPathValid:
         return "Emulator Path is Vaild."
-    case .NotFoundemulator:
+    case .emulatorCustomPathValid:
+        return "In the application settings, the custom emulator path is invalid."
+    case .NotFoundEmulator:
         return "The emulator list is empty."
+    case .NotFoundActiveEmulator:
+        return "Not Found Active Emulator"
     case .FailedToGetProcessInfo:
         return "Failed to get process information."
     case .FailedToGetProcessID:
@@ -58,29 +64,32 @@ class AndroidEmulatorManager {
     
     // 查找emulator路径
     static func getEmulatorPath() async throws -> String {
-        if osEmulatorPath == nil {
-            let readResult = readSetting()
-            if readResult == nil {
-                osEmulatorPath = try runCommand(executableURL: "", arguments: ["-c", "-l", "which emulator"])?.first ?? ""
-            } else {
-                osEmulatorPath = readResult
-            }
-            if osEmulatorPath!.isEmpty {
-                throw EmulatorError.emulatorPathNotFound
-            }
-            if !isPathValid(osEmulatorPath!, endsWith: "emulator") {
-                throw EmulatorError.emulatorPathValid
-            }
-            print("path: \(osEmulatorPath!)")
+        //print("------------->", osEmulatorPath, !isChangeAppSettingsValue)
+        if let path = osEmulatorPath, !isChangeAppSettingsValue {
+            return path
         }
+        
+        let readResult = readSetting()
+        if readResult == nil {
+            osEmulatorPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which emulator"])?.first ?? ""
+        } else {
+            osEmulatorPath = readResult
+            if !isPathValid(osEmulatorPath!, endsWith: "emulator") {
+                throw EmulatorError.emulatorCustomPathValid
+            }
+        }
+        if osEmulatorPath!.isEmpty {
+            throw EmulatorError.emulatorPathNotFound
+        }
+        print("path: \(osEmulatorPath!)")
         return osEmulatorPath!
     }
     
     // 获取模拟器列表
     static func getEmulatorList() async throws -> [String] {
         let _ = try await getEmulatorPath()
-        guard let emulatorLists = try runCommand(executableURL: osEmulatorPath!, arguments: ["-list-avds"]) else {
-            throw EmulatorError.NotFoundemulator
+        guard let emulatorLists = try await run_simple_command(executableURL: osEmulatorPath!, arguments: ["-list-avds"]) else {
+            throw EmulatorError.NotFoundEmulator
         }
         
         return emulatorLists
@@ -89,8 +98,8 @@ class AndroidEmulatorManager {
     // 获取当前已启动的模拟器列表
     static func getActiveEmulatorList(EmulatorList: [String]) async throws -> [String] {
         let args = ["-af", "-o", "command"]
-        guard let psList = try runCommand(executableURL: "/bin/ps", arguments: args) else {
-            throw EmulatorError.NotFoundemulator
+        guard let psList = try await run_simple_command(executableURL: "/bin/ps", arguments: args) else {
+            throw EmulatorError.NotFoundActiveEmulator
         }
         
         var ActiveEmulatorList: [String] = []
@@ -107,14 +116,14 @@ class AndroidEmulatorManager {
     // 启动模拟器
     static func startEmulator(emulatorName: String,  completion: @escaping (Bool, Error?) -> Void) {
         if (emulatorName.isEmpty) {
-            completion(false, EmulatorError.NotFoundemulator)
+            completion(false, EmulatorError.NotFoundEmulator)
             return
         }
         let args = ["-dns-server", "223.5.5.5", "-no-snapshot-save", "-avd", emulatorName]
         DispatchQueue.global(qos: .background).async {
             do {
                 guard (try runCommand(executableURL: osEmulatorPath!, arguments: args, action: "start")) != nil else {
-                    throw EmulatorError.NotFoundemulator
+                    throw EmulatorError.NotFoundEmulator
                 }
                 DispatchQueue.main.async {
                     completion(true, nil)

@@ -19,6 +19,7 @@ struct AndroidDeviceItem: Identifiable, Hashable {
 enum ADBError: Error {
     case NotFoundADB
     case AdbPathValid
+    case AdbCustomPathVaild
     case AdbExecutionFailed
 }
 
@@ -29,6 +30,8 @@ func getADBErrorMessage(etype: ADBError) -> String {
         return "ADB Path Not Found."
     case .AdbPathValid:
         return "ADB PATH is Vaild."
+    case .AdbCustomPathVaild:
+        return "In the application settings, the custom adb path is invalid"
     case .AdbExecutionFailed:
         return "adb command execution failed"
     }
@@ -89,25 +92,25 @@ class ADB {
     
     // 查找adb路径
     static func getAdbPath() async throws -> String {
-        if let path = osAdbPath {
+        //print("------------->", osAdbPath as Any, !isChangeAppSettingsValue)
+        if let path = osAdbPath, !isChangeAppSettingsValue {
             return path
         }
         
         let readResult = readSetting()
-        print("[readResult]", readResult)
+        print("[readResult]", readResult as Any)
         if readResult == nil {
             osAdbPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
         } else {
             osAdbPath = readResult
+            if !isPathValid(osAdbPath!, endsWith: "adb") {
+                throw ADBError.AdbCustomPathVaild
+            }
         }
-        
         if osAdbPath!.isEmpty {
             throw ADBError.NotFoundADB
         }
-        if !isPathValid(osAdbPath!, endsWith: "adb") {
-            throw ADBError.AdbPathValid
-        }
-        print("[adbPath]", osAdbPath)
+        print("[adbPath]", osAdbPath as Any)
         return osAdbPath!
     }
     
