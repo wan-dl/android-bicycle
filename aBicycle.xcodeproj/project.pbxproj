@@ -19,6 +19,9 @@
 		63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */; };
 		63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC32A7BF71800839E7B /* EmulatorView.swift */; };
 		63C236E32A7D505E0019466C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C236E22A7D505E0019466C /* Settings.swift */; };
+		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
+		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
+		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbLogcatView.swift; sourceTree = "<group>"; };
 		63A81BC32A7BF71800839E7B /* EmulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorView.swift; sourceTree = "<group>"; };
 		63C236E22A7D505E0019466C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
+		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
+		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +74,7 @@
 		63A81BA42A7BF5ED00839E7B /* aBicycle */ = {
 			isa = PBXGroup;
 			children = (
+				63CD032C2A7F3B7F00E7F993 /* Config */,
 				63C236E12A7D50340019466C /* ViewsMenu */,
 				63A81BC02A7BF6DE00839E7B /* Views */,
 				63A81BB92A7BF68E00839E7B /* Utils */,
@@ -104,6 +111,7 @@
 				63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */,
 				63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */,
 				63A81BBE2A7BF6D000839E7B /* run_command.swift */,
+				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -121,8 +129,17 @@
 			isa = PBXGroup;
 			children = (
 				63C236E22A7D505E0019466C /* Settings.swift */,
+				63CD032F2A7F3CF900E7F993 /* handleSettings.swift */,
 			);
 			path = ViewsMenu;
+			sourceTree = "<group>";
+		};
+		63CD032C2A7F3B7F00E7F993 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				63CD032D2A7F3B8E00E7F993 /* config.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,12 +215,15 @@
 				63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */,
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
+				63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */,
 				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
 				63C236E32A7D505E0019466C /* Settings.swift in Sources */,
 				63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */,
 				63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */,
 				63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */,
+				63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
+				63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */,
 				63A81BB62A7BF64500839E7B /* sidebar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
