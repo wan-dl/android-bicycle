@@ -33,6 +33,8 @@ func getErrorMessage(etype: EmulatorError) -> String {
         return "Failed to get process ID."
     case .FailedToKillProcess:
         return "Failed to kill process"
+    default:
+        return "Unknown error."
     }
 }
 

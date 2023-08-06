@@ -19,6 +19,7 @@
 		63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */; };
 		63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BC32A7BF71800839E7B /* EmulatorView.swift */; };
 		63BBF6802A7F541E00C2621B /* utis_path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BBF67F2A7F541E00C2621B /* utis_path.swift */; };
+		63BBF6822A7F568400C2621B /* ui_alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BBF6812A7F568400C2621B /* ui_alert.swift */; };
 		63C236E32A7D505E0019466C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C236E22A7D505E0019466C /* Settings.swift */; };
 		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
@@ -40,6 +41,7 @@
 		63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbLogcatView.swift; sourceTree = "<group>"; };
 		63A81BC32A7BF71800839E7B /* EmulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorView.swift; sourceTree = "<group>"; };
 		63BBF67F2A7F541E00C2621B /* utis_path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utis_path.swift; sourceTree = "<group>"; };
+		63BBF6812A7F568400C2621B /* ui_alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ui_alert.swift; sourceTree = "<group>"; };
 		63C236E22A7D505E0019466C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				63A81BB52A7BF64500839E7B /* sidebar.swift */,
 				63A81BB72A7BF67400839E7B /* EmptyView.swift */,
+				63BBF6812A7F568400C2621B /* ui_alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */,
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
+				63BBF6822A7F568400C2621B /* ui_alert.swift in Sources */,
 				63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */,
 				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
 				63BBF6802A7F541E00C2621B /* utis_path.swift in Sources */,

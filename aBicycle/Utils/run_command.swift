@@ -58,9 +58,6 @@ func runCommand(executableURL: String, arguments: [String], action: String = "")
     process.environment = environment
     process.executableURL = URL(fileURLWithPath: shellPath)
     process.arguments = arguments
-//    process.terminationHandler = { (process) in
-//       print("\ndidFinish: \(!process.isRunning)")
-//    }
     
     let pipe = Pipe()
     process.standardOutput = pipe
@@ -88,18 +85,17 @@ func runCommand(executableURL: String, arguments: [String], action: String = "")
             return outputLines
         }
         
-        
         process.waitUntilExit()
-
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         guard process.terminationStatus == 0 else {
             return nil
         }
-
+        
         let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines)
         let outPutList = output?.components(separatedBy: .newlines) ?? []
         return outPutList
     } catch let error {
+        print("[error]-> \(error)")
         throw error
     }
 }

@@ -123,7 +123,8 @@ struct AdbLogcatView: View {
                     }
                 }
             } catch let error {
-                print(error)
+                let msg = getADBErrorMessage(etype: error as! ADBError)
+                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
             }
         }
     }
@@ -141,7 +142,8 @@ struct AdbLogcatView: View {
                     self.currentDeviceAllPackageList.append(contentsOf: output)
                 }
             } catch {
-                print("Error: \(error)")
+                let msg = getADBErrorMessage(etype: error as! ADBError)
+                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
             }
         }
     }

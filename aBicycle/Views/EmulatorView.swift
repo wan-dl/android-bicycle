@@ -146,7 +146,8 @@ struct EmulatorView: View {
                     self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: output)
                 }
             } catch let error {
-                print(error)
+                let msg = getErrorMessage(etype: error as! EmulatorError)
+                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
             }
         }
     }
@@ -161,7 +162,8 @@ struct EmulatorView: View {
             if success {
                 activeEmulatorList.append(avdName)
             } else if let error = error {
-                print(error)
+                let msg = getErrorMessage(etype: error as! EmulatorError)
+                _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
             }
         }
     }
@@ -180,7 +182,8 @@ struct EmulatorView: View {
                 }
             }
         } catch {
-            print(error)
+            let msg = getErrorMessage(etype: error as! EmulatorError)
+            _ = showAlert(title: "Error", msg: msg, ConfirmBtnText: "")
         }
         
     }

@@ -50,7 +50,7 @@ struct MainView: View {
     var left_view: some View {
         VStack(alignment: .leading) {
             sidebar(title: "Emulator", systemImage: "doc.plaintext", help: "Andriod Studio模拟器", isActive: activeNavName == .Emulator, action: { self.activeNavName = .Emulator })
-            sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", help: "Logcat", isActive: activeNavName == .AdbLogcat, action: { self.activeNavName = .AdbLogcat })
+//            sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", help: "Logcat", isActive: activeNavName == .AdbLogcat, action: { self.activeNavName = .AdbLogcat })
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
