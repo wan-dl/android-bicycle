@@ -97,10 +97,11 @@ class AndroidEmulatorManager {
     
     // 获取当前已启动的模拟器列表
     static func getActiveEmulatorList(EmulatorList: [String]) async throws -> [String] {
-        let args = ["-af", "-o", "command"]
+        let args = ["-Af", "-o", "command"]
         guard let psList = try await run_simple_command(executableURL: "/bin/ps", arguments: args) else {
             throw EmulatorError.NotFoundActiveEmulator
         }
+        //print("--->\(psList)")
         
         var ActiveEmulatorList: [String] = []
         if !psList.isEmpty {
@@ -138,10 +139,12 @@ class AndroidEmulatorManager {
     
     // 停止模拟器
     static func killEmulator(emulatorName: String) throws -> Bool {
-        let args = ["-A", "-o", "args="]
+        let args = ["-Af", "-o", "command"]
         guard let psList = try runCommand(executableURL: "/bin/ps", arguments: args) else {
             throw EmulatorError.FailedToGetProcessInfo
         }
+        //print("----->\(psList)")
+        
         var info: String = ""
         if !psList.isEmpty {
             for i in psList {
@@ -150,13 +153,17 @@ class AndroidEmulatorManager {
                 }
             }
         }
+        //print("--->\(info)")
+        
         var pid: String = ""
         if info != "" {
             let components = info.split(separator: " ")
             if components.count >= 3 {
-                pid = String(components[2])
+                pid = String(components[1])
             }
         }
+        //print("[PID] -> \(pid)")
+        
         if pid == "" {
             throw EmulatorError.FailedToGetProcessID
         }
