@@ -138,9 +138,9 @@ class AndroidEmulatorManager {
     }
     
     // 停止模拟器
-    static func killEmulator(emulatorName: String) throws -> Bool {
+    static func killEmulator(emulatorName: String) async throws -> Bool {
         let args = ["-Af", "-o", "command"]
-        guard let psList = try runCommand(executableURL: "/bin/ps", arguments: args) else {
+        guard let psList = try await run_simple_command(executableURL: "/bin/ps", arguments: args) else {
             throw EmulatorError.FailedToGetProcessInfo
         }
         //print("----->\(psList)")
@@ -162,13 +162,13 @@ class AndroidEmulatorManager {
                 pid = String(components[1])
             }
         }
-        //print("[PID] -> \(pid)")
+        print("[PID] -> \(emulatorName) \(pid)")
         
         if pid == "" {
             throw EmulatorError.FailedToGetProcessID
         }
         let killArgs = ["-9", pid]
-        guard (try runCommand(executableURL: "/bin/kill", arguments: killArgs)) != nil else {
+        guard (try await run_simple_command(executableURL: "/bin/kill", arguments: killArgs)) != nil else {
             throw EmulatorError.FailedToKillProcess
         }
         return true

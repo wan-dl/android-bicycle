@@ -76,18 +76,20 @@ struct EmulatorView: View {
                 VStack(alignment: .leading) {
                     Text(item.name)
                         .font(.body)
-//                        .listRowSeparator(.hidden, edges: .top)
-//                    Text("Android 10")
-//                        .font(.caption)
-//                        .padding([.top], 0.1)
+                    //Text("Android 10")
+                    //    .font(.caption)
+                    //    .padding([.top], 0.1)
                 }
                 Spacer()
-                if self.activeEmulatorList.contains(item.name) {
-                    button_view_for_stop
-                } else {
-                    button_view_for_start
+                HStack {
+                    if self.activeEmulatorList.contains(item.name) {
+                        button_view_for_stop
+                    } else {
+                        button_view_for_start
+                    }
+                    //button_view_for_edit
                 }
-                button_view_for_edit
+                .padding(.horizontal, 15)
             }
             .frame(height: 45)
             .background(hoverItemId == item.id ? Color.gray.opacity(0.1) : Color.clear)
@@ -106,32 +108,41 @@ struct EmulatorView: View {
     }
     
     var button_view_for_start: some View {
-        Button(action: clickBootEmulator ) {
+        Button(action: bootEmulator ) {
             Label("start_emulator", systemImage: "play.fill")
                 .font(.title3)
                 .labelStyle(.iconOnly)
+                .frame(width: 45, height: 45)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        
     }
     
     var button_view_for_stop: some View {
-        Button(action: clickKillEmulator ) {
+        Button(action: {
+            Task {
+                await killEmulator()
+            }
+        }) {
             Label("stop_emulator", systemImage: "stop.circle.fill")
                 .font(.title3)
                 .labelStyle(.iconOnly)
+                .frame(width: 45, height: 45)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
     
-    var button_view_for_edit: some View {
-        Button(action: clickEditEmulator) {
-            Label("edit_emulator", systemImage: "pencil")
-                .font(.title3)
-                .labelStyle(.iconOnly)
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 10)
-    }
+//    var button_view_for_edit: some View {
+//        Button(action: clickEditEmulator) {
+//            Label("edit_emulator", systemImage: "pencil")
+//                .font(.title3)
+//                .labelStyle(.iconOnly)
+//        }
+//        .buttonStyle(.plain)
+//        .padding(.horizontal, 10)
+//    }
     
     // 获取模拟器列表
     func getEmulatorList() {
@@ -163,7 +174,7 @@ struct EmulatorView: View {
     }
     
     // 模拟器：启动
-    func clickBootEmulator() {
+    func bootEmulator() {
         if (self.hoverItem == "") {
             return
         }
@@ -179,13 +190,13 @@ struct EmulatorView: View {
     }
     
     // 模拟器：停止杀死模拟器
-    func clickKillEmulator() {
+    func killEmulator() async {
         if (self.hoverItem == "") {
             return
         }
         let avdName = self.hoverItem
         do {
-            let output = try AndroidEmulatorManager.killEmulator(emulatorName: avdName)
+            let output = try await AndroidEmulatorManager.killEmulator(emulatorName: avdName)
             if output == true {
                 activeEmulatorList.removeAll { element in
                     return element == avdName
@@ -195,11 +206,5 @@ struct EmulatorView: View {
             let msg = getErrorMessage(etype: error as! EmulatorError)
             showAlertOnlyPrompt(title: "Error", msg: msg)
         }
-        
-    }
-
-    // 模拟器：编辑模拟器配置
-    func clickEditEmulator() {
-        
     }
 }
