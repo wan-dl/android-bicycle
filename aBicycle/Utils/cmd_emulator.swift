@@ -138,7 +138,7 @@ class AndroidEmulatorManager {
     
     // 停止模拟器
     static func killEmulator(emulatorName: String) throws -> Bool {
-        let args = ["-af"]
+        let args = ["-A", "-o", "args="]
         guard let psList = try runCommand(executableURL: "/bin/ps", arguments: args) else {
             throw EmulatorError.FailedToGetProcessInfo
         }
