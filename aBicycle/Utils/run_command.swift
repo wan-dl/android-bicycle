@@ -11,7 +11,7 @@ import Foundation
  运行简单的一些shell命令。
  即shell命令执行后，立即结束获取到结果。
  */
-func run_simple_command(executableURL: String, arguments: [String], action: String = "") async throws -> [String]? {
+func run_simple_command(executableURL: String, arguments: [String], action: String = "", isWait: Bool = false) async throws -> [String]? {
     let processInfo = ProcessInfo.processInfo
     let environment = processInfo.environment
     var shellPath = environment["SHELL"]  ?? ""
@@ -29,17 +29,23 @@ func run_simple_command(executableURL: String, arguments: [String], action: Stri
 
     do {
         try process.run()
-        process.waitUntilExit()
-
+        
+        if isWait {
+            process.waitUntilExit()
+        }
+        
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        guard process.terminationStatus == 0 else {
-            return nil
+        if !process.isRunning {
+            guard process.terminationStatus == 0 else {
+                return nil
+            }
         }
 
         let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines)
         let outPutList = output?.components(separatedBy: .newlines) ?? []
         return outPutList
     } catch let error {
+        print("[run_simple_command() error] \(error)")
         throw error
     }
 }
@@ -95,7 +101,7 @@ func runCommand(executableURL: String, arguments: [String], action: String = "")
         let outPutList = output?.components(separatedBy: .newlines) ?? []
         return outPutList
     } catch let error {
-        print("[error]-> \(error)")
+        print("[runCommand() error]-> \(error)")
         throw error
     }
 }

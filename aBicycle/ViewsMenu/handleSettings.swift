@@ -112,4 +112,17 @@ class SettingsHandler {
 }
 
 
-
+// 按key读取设置项
+public func getSettingValue(key: String) -> String? {
+    do {
+        let fileContent: [String: Any] = try SettingsHandler.readJsonFileAll(defaultValue: [:])
+        if !fileContent.isEmpty {
+            if let emualtorPath = fileContent[key] as? String {
+                return String(emualtorPath)
+            }
+        }
+        return nil
+    } catch {
+        return nil
+    }
+}

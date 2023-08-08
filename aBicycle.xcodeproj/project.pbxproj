@@ -24,6 +24,10 @@
 		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
 		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
+		E5F1446A2A82388200570B5A /* cmd_avdmanager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F144692A82388200570B5A /* cmd_avdmanager.swift */; };
+		E5F1446C2A823C2F00570B5A /* command_manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F1446B2A823C2F00570B5A /* command_manager.swift */; };
+		E5F1446E2A82408300570B5A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F1446D2A82408300570B5A /* Error.swift */; };
+		E5F144702A82459700570B5A /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F1446F2A82459700570B5A /* Types.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
 		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
+		E5F144692A82388200570B5A /* cmd_avdmanager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmd_avdmanager.swift; sourceTree = "<group>"; };
+		E5F1446B2A823C2F00570B5A /* command_manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = command_manager.swift; sourceTree = "<group>"; };
+		E5F1446D2A82408300570B5A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		E5F1446F2A82459700570B5A /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,8 +121,10 @@
 		63A81BB92A7BF68E00839E7B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */,
 				63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */,
+				E5F144692A82388200570B5A /* cmd_avdmanager.swift */,
+				63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */,
+				E5F1446B2A823C2F00570B5A /* command_manager.swift */,
 				63A81BBE2A7BF6D000839E7B /* run_command.swift */,
 				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
 				63BBF67F2A7F541E00C2621B /* utis_path.swift */,
@@ -144,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				63CD032D2A7F3B8E00E7F993 /* config.swift */,
+				E5F1446D2A82408300570B5A /* Error.swift */,
+				E5F1446F2A82459700570B5A /* Types.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -222,16 +234,20 @@
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
 				63BBF6822A7F568400C2621B /* ui_alert.swift in Sources */,
+				E5F144702A82459700570B5A /* Types.swift in Sources */,
 				63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */,
 				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
 				63BBF6802A7F541E00C2621B /* utis_path.swift in Sources */,
 				63C236E32A7D505E0019466C /* Settings.swift in Sources */,
+				E5F1446A2A82388200570B5A /* cmd_avdmanager.swift in Sources */,
+				E5F1446C2A823C2F00570B5A /* command_manager.swift in Sources */,
 				63A81BBF2A7BF6D000839E7B /* run_command.swift in Sources */,
 				63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */,
 				63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */,
 				63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
 				63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */,
+				E5F1446E2A82408300570B5A /* Error.swift in Sources */,
 				63A81BB62A7BF64500839E7B /* sidebar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

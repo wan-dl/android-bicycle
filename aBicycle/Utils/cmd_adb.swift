@@ -9,35 +9,6 @@ import Foundation
 import Combine
 
 
-struct AndroidDeviceItem: Identifiable, Hashable {
-    var model: String
-    var serialno: String
-    let id = UUID()
-}
-
-
-enum ADBError: Error {
-    case NotFoundADB
-    case AdbPathValid
-    case AdbCustomPathVaild
-    case AdbExecutionFailed
-}
-
-
-func getADBErrorMessage(etype: ADBError) -> String {
-    switch(etype) {
-    case .NotFoundADB:
-        return "ADB Path Not Found."
-    case .AdbPathValid:
-        return "ADB PATH is Vaild."
-    case .AdbCustomPathVaild:
-        return "In the application settings, the custom adb path is invalid"
-    case .AdbExecutionFailed:
-        return "adb command execution failed"
-    }
-}
-
-
 // 使用正则匹配Android设备ID
 func extractAndroidDeviceID(from input: String) -> String? {
     let pattern = "^(.*?)\\s"
@@ -76,49 +47,27 @@ func extractAndroidModel(from input: String) -> String? {
 class ADB {
     static var osAdbPath: String?
     
-    static func readSetting() -> String? {
-        do {
-            let fileContent: [String: Any] = try SettingsHandler.readJsonFileAll(defaultValue: [:])
-            if !fileContent.isEmpty {
-                if let adbPath = fileContent["ConfigADBPath"] as? String {
-                    return adbPath
-                }
-            }
-            return nil
-        } catch {
-            return nil
-        }
-    }
-    
     // 查找adb路径
     static func getAdbPath() async throws -> String {
-        //print("------------->", osAdbPath as Any, !isChangeAppSettingsValue)
         if let path = osAdbPath, !isChangeAppSettingsValue {
             return path
         }
         
-        let readResult = readSetting()
-        print("[readResult]", readResult as Any)
-        if readResult == nil {
-            osAdbPath = try await run_simple_command(executableURL: "", arguments: ["-c", "-l", "which adb"])?.first ?? ""
-        } else {
-            osAdbPath = readResult
-            if !isPathValid(osAdbPath!, endsWith: "adb") {
-                throw ADBError.AdbCustomPathVaild
-            }
+        do {
+            let cmd = CommandLineManager()
+            let toolPath = try await cmd.getToolPath(toolName: "adb", settingKey: "ConfigADBPath")
+            osAdbPath = toolPath
+            return toolPath
+        } catch {
+            throw error
         }
-        if osAdbPath!.isEmpty {
-            throw ADBError.NotFoundADB
-        }
-        print("[adbPath]", osAdbPath as Any)
-        return osAdbPath!
     }
     
     // 执行：adb devices -l
     static func adbDevices() async throws -> [AndroidDeviceItem] {
         let adbPath = try await getAdbPath()
         guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: ["devices", "-l"]) else {
-            throw ADBError.AdbExecutionFailed
+            throw AppError.ExecutionFailed
         }
         if outputList.count == 1 {
             return []
@@ -145,7 +94,7 @@ class ADB {
         let adbPath = try await getAdbPath()
         let args = ["-s", serialno, "shell", "pm", "list", "packages"]
         guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: args) else {
-            throw ADBError.AdbExecutionFailed
+            throw AppError.ExecutionFailed
         }
         
         if outputList.count == 0 {

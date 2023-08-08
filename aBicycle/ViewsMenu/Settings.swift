@@ -31,6 +31,7 @@ struct SettingsGeneralView: View {
     @State var ConfigAndroidHOME: String = ""
     @State var ConfigEmulatorPath: String = ""
     @State var ConfigADBPath: String = ""
+    @State var ConfigAvdmanagerPath: String = ""
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -40,6 +41,13 @@ struct SettingsGeneralView: View {
                 .padding(.bottom, 10)
             
             Form {
+                TextField(text: $ConfigAvdmanagerPath, prompt: Text("avdmanager绝对路径，输入回车自动保存")) {
+                   Text("avdmanager路径")
+                }
+                .onSubmit {
+                    updateChange(key: "ConfigAvdmanagerPath", value: ConfigAvdmanagerPath)
+                }
+                
                 TextField(text: $ConfigEmulatorPath, prompt: Text("emulator绝对路径，输入回车自动保存")) {
                    Text("emulator路径")
                 }
@@ -73,6 +81,11 @@ struct SettingsGeneralView: View {
             return
         }
         
+        if key == "ConfigAvdmanagerPath" && !isPathValid(value, endsWith: "avdmanager") {
+            _ = showAlert(title: "Error", msg: "avdmanager路径无效", ConfirmBtnText: "")
+            return
+        }
+        
         do {
             let writeResult = try SettingsHandler.writeJsonFile(key: key, value: value)
             if writeResult {
@@ -93,10 +106,12 @@ struct SettingsGeneralView: View {
                 if let emualtorPath = fileContent["ConfigEmulatorPath"] as? String {
                     self.ConfigEmulatorPath = emualtorPath
                 }
+                if let AvdmanagerPath = fileContent["ConfigAvdmanagerPath"] as? String {
+                    self.ConfigAvdmanagerPath = AvdmanagerPath
+                }
             }
         } catch {
             _ = showAlert(title: "Error", msg: "读取自定义配置发生错误", ConfirmBtnText: "")
         }
     }
 }
-

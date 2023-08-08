@@ -7,16 +7,13 @@
 
 import SwiftUI
 
-import SwiftUI
-
-struct DeviceItem: Identifiable {
-    let name: String
-    let id = UUID().uuidString
-}
-
 
 struct EmulatorView: View {
-    @State var avdsList: [DeviceItem] = []
+    // 存储 avdmanager list avds输出
+    @State var avdsList: [AvdItem] = []
+    
+    // 存储 emulator -list-avds输出。此命令输出结果特别快
+    @State var emulatorList: [AvdItem] = []
     
     @State private var selectedItemId: String = ""
     @State private var selectedItem: String = ""
@@ -27,105 +24,77 @@ struct EmulatorView: View {
     
     var body: some View {
         ScrollView {
-            emulator_top_view
-            
-            if avdsList.isEmpty {
+            if emulatorList.isEmpty {
                 EmptyView(text: "No Emulator")
             }
             
-            if (avdsList.count != 0) {
-                show_emulator_list
+            if (emulatorList.count != 0) {
+                view_show_emulator_list
                     .padding(.horizontal, 10)
+                    .offset(y: 20)
             }
         }
-        .onAppear() {}
         .task {
             getEmulatorList()
+            getAvdmanagerList()
         }
         .contextMenu {
-            contextMenu_view
+            view_context_menu
         }
     }
     
-    // 右键菜单
-    var contextMenu_view: some View {
-        Section {
-            Button("Refresh Device") {
-                getEmulatorList()
-            }
-            Divider()
-        }
-    }
-    
-    var emulator_top_view: some View {
-        HStack() {
-            Spacer()
-        }
-    }
-    
-    var show_emulator_list: some View {
-        ForEach(avdsList) { item in
+    var view_show_emulator_list: some View {
+        ForEach(emulatorList) { item in
             HStack() {
                 Label("", systemImage: "circle.fill")
                     .font(.caption2)
                     .labelStyle(.iconOnly)
-                    .foregroundColor(self.activeEmulatorList.contains(item.name) ? Color.green : Color.clear)
+                    .foregroundColor(self.activeEmulatorList.contains(item.Name) ? Color.green : Color.clear)
                 Image("android")
                     .resizable()
                     .frame(width: 24, height: 24)
                 VStack(alignment: .leading) {
-                    Text(item.name)
+                    Text(item.Name)
                         .font(.body)
-                    //Text("Android 10")
-                    //    .font(.caption)
-                    //    .padding([.top], 0.1)
+                    HStack {
+                        Text("\(item.Version) \(item.ABI)")
+                            .font(.caption)
+                            .padding([.top], 0.1)
+                    }
                 }
                 Spacer()
                 HStack {
-                    if self.activeEmulatorList.contains(item.name) {
-                        button_view_for_stop
+                    if self.activeEmulatorList.contains(item.Name) {
+                        view_boot_button(name: "stop")
                     } else {
-                        button_view_for_start
+                        view_boot_button(name: "start")
                     }
-                    //button_view_for_edit
+                    view_more_button
                 }
                 .padding(.horizontal, 15)
             }
-            .frame(height: 45)
+            .frame(height: 50)
             .background(hoverItemId == item.id ? Color.gray.opacity(0.1) : Color.clear)
-            .background(selectedItem == item.name  ? Color.cyan.opacity(0.05) : Color.clear)
+            .background(selectedItem == item.Name  ? Color.cyan.opacity(0.05) : Color.clear)
             .cornerRadius(3)
             .onHover { isHovered in
                 hoverItemId = isHovered ? item.id : ""
-                hoverItem = isHovered ? item.name : ""
+                hoverItem = isHovered ? item.Name : ""
             }
             .onTapGesture {
-                selectedItem = item.name
+                selectedItem = item.Name
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
     }
     
-    var button_view_for_start: some View {
-        Button(action: bootEmulator ) {
-            Label("start_emulator", systemImage: "play.fill")
-                .font(.title3)
-                .labelStyle(.iconOnly)
-                .frame(width: 45, height: 45)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        
-    }
-    
-    var button_view_for_stop: some View {
+    // 视图: 启动和停止按钮
+    func view_boot_button(name: String) -> some View {
         Button(action: {
-            Task {
-                await killEmulator()
-            }
+            name == "start" ? bootEmulator() : killEmulator()
         }) {
-            Label("stop_emulator", systemImage: "stop.circle.fill")
+            Label("\(name)_emulator", systemImage: name == "stop" ? "stop.circle.fill": "play.fill")
                 .font(.title3)
                 .labelStyle(.iconOnly)
                 .frame(width: 45, height: 45)
@@ -134,46 +103,81 @@ struct EmulatorView: View {
         .buttonStyle(.plain)
     }
     
-//    var button_view_for_edit: some View {
-//        Button(action: clickEditEmulator) {
-//            Label("edit_emulator", systemImage: "pencil")
-//                .font(.title3)
-//                .labelStyle(.iconOnly)
-//        }
-//        .buttonStyle(.plain)
-//        .padding(.horizontal, 10)
-//    }
+    // 视图：更多按钮
+    var view_more_button: some View {
+        Button(action: {}) {
+            Label("edit_emulator", systemImage: "ellipsis")
+                .font(.title3)
+                .labelStyle(.iconOnly)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 10)
+    }
     
-    // 获取模拟器列表
+    // 视图：右键菜单
+    var view_context_menu: some View {
+        Section {
+            Button("Refresh Device") {
+                getEmulatorList()
+                getAvdmanagerList()
+            }
+            Divider()
+        }
+    }
+    
+    // 通过emulator命令：获取模拟器列表
     func getEmulatorList() {
         Task(priority: .medium) {
             do {
                 let output = try await AndroidEmulatorManager.getEmulatorList()
-                self.avdsList = []
-                if !output.isEmpty {
-                    for i in output {
-                        avdsList.append(DeviceItem(name: i))
+                DispatchQueue.main.async {
+                    self.emulatorList = []
+                    if !output.isEmpty {
+                        for i in output {
+                            self.emulatorList.append(AvdItem(Name: i))
+                        }
                     }
-                    await getStartedEmulator(allEmulator: output)
                 }
+                await getStartedEmulator(allEmulator: output)
             } catch let error {
-                let msg = getErrorMessage(etype: error as! EmulatorError)
+                let msg = getErrorMessage(etype: error as! AppError)
                 showAlertOnlyPrompt(title: "Error", msg: msg)
             }
         }
     }
     
-    // 获取激活的模拟器列表
+    // 通过avdmanager list avd命令行获取模拟器列表
+    func getAvdmanagerList() {
+        Task(priority: .medium) {
+            do {
+                let output = try await AVDManager.getAvdList()
+                if !output.isEmpty {
+                    let newArray = replaceMatchingItems(in: self.emulatorList, withItemsFrom: output)
+                    //print("[newArray]...\(newArray)")
+                    if !newArray.isEmpty {
+                        DispatchQueue.main.async {
+                            self.emulatorList = newArray
+                        }
+                    }
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    // 通过emulator命令：获取激活的模拟器列表
     func getStartedEmulator(allEmulator: [String]) async {
         do {
             self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: allEmulator)
+            //print("[activeEmulatorList] \(self.activeEmulatorList)")
         } catch let error {
-            let msg = getErrorMessage(etype: error as! EmulatorError)
+            let msg = getErrorMessage(etype: error as! AppError)
             showAlertOnlyPrompt(title: "Error", msg: msg)
         }
     }
     
-    // 模拟器：启动
+    // 通过emulator命令：启动模拟器
     func bootEmulator() {
         if (self.hoverItem == "") {
             return
@@ -183,28 +187,43 @@ struct EmulatorView: View {
             if success {
                 activeEmulatorList.append(avdName)
             } else if let error = error {
-                let msg = getErrorMessage(etype: error as! EmulatorError)
+                let msg = getErrorMessage(etype: error as! AppError)
                 showAlertOnlyPrompt(title: "Error", msg: msg)
             }
         }
     }
     
     // 模拟器：停止杀死模拟器
-    func killEmulator() async {
-        if (self.hoverItem == "") {
-            return
-        }
-        let avdName = self.hoverItem
-        do {
-            let output = try await AndroidEmulatorManager.killEmulator(emulatorName: avdName)
-            if output == true {
-                activeEmulatorList.removeAll { element in
-                    return element == avdName
-                }
+    func killEmulator() {
+        Task {
+            if (self.hoverItem == "") {
+                return
             }
-        } catch {
-            let msg = getErrorMessage(etype: error as! EmulatorError)
-            showAlertOnlyPrompt(title: "Error", msg: msg)
+            let avdName = self.hoverItem
+            do {
+                let output = try await AndroidEmulatorManager.killEmulator(emulatorName: avdName)
+                if output == true {
+                    activeEmulatorList.removeAll { element in
+                        return element == avdName
+                    }
+                }
+            } catch {
+                let msg = getErrorMessage(etype: error as! AppError)
+                showAlertOnlyPrompt(title: "Error", msg: msg)
+            }
+        }
+    }
+}
+
+
+// emulator -list-avds输出结果比avdmanager list avds快，但是emulator输出内容少。
+// 因此先用emulator获取，然后avdmanager有结果时再替换数据。
+func replaceMatchingItems(in array1: [AvdItem], withItemsFrom array2: [AvdItem]) -> [AvdItem] {
+    return array1.map { item1 in
+        if let matchingItem2 = array2.first(where: { $0.Name == item1.Name }) {
+            return matchingItem2
+        } else {
+            return item1
         }
     }
 }
