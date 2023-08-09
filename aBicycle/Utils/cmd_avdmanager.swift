@@ -43,7 +43,15 @@ class AVDManager {
     
     // 删除
     static func delete(name: String) async throws -> Bool {
-        return false
+        guard let output = try await run_simple_command(executableURL: avdmanagerPath!, arguments: ["delete", "avd3", "-n", name]) else {
+            throw AppError.ExecutionFailed
+        }
+        let outputStr = output.joined(separator: ", ")
+        print("[删除结果] \(outputStr)")
+        if !output.isEmpty && !outputStr.contains("deleted") {
+            throw AppError.FailedToDeleteAvd
+        }
+        return true
     }
 }
 

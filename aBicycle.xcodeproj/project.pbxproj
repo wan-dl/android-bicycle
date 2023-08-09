@@ -25,6 +25,7 @@
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
 		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
 		63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FDD36C2A831B0300632CCA /* utils_os.swift */; };
+		E50338292A83694600EB85A0 /* style.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50338282A83694600EB85A0 /* style.swift */; };
 		E5F1446A2A82388200570B5A /* cmd_avdmanager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F144692A82388200570B5A /* cmd_avdmanager.swift */; };
 		E5F1446C2A823C2F00570B5A /* command_manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F1446B2A823C2F00570B5A /* command_manager.swift */; };
 		E5F1446E2A82408300570B5A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F1446D2A82408300570B5A /* Error.swift */; };
@@ -52,6 +53,7 @@
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
 		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
 		63FDD36C2A831B0300632CCA /* utils_os.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_os.swift; sourceTree = "<group>"; };
+		E50338282A83694600EB85A0 /* style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = style.swift; sourceTree = "<group>"; };
 		E5F144692A82388200570B5A /* cmd_avdmanager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmd_avdmanager.swift; sourceTree = "<group>"; };
 		E5F1446B2A823C2F00570B5A /* command_manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = command_manager.swift; sourceTree = "<group>"; };
 		E5F1446D2A82408300570B5A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				63A81BB52A7BF64500839E7B /* sidebar.swift */,
 				63A81BB72A7BF67400839E7B /* EmptyView.swift */,
 				63BBF6812A7F568400C2621B /* ui_alert.swift */,
+				E50338282A83694600EB85A0 /* style.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */,
+				E50338292A83694600EB85A0 /* style.swift in Sources */,
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
 				63BBF6822A7F568400C2621B /* ui_alert.swift in Sources */,

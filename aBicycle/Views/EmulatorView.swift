@@ -20,7 +20,16 @@ struct EmulatorView: View {
     @State private var hoverItemId: String = ""
     @State private var hoverItem: String = ""
     
+    @State private var isHoverBootButton: String = ""
+    @State private var isHoverMoreButton: String = ""
+    
     @State private var activeEmulatorList: [String] = []
+    
+    @State private var showDeleteAlert = false
+    @State private var deleteAvdName: String = ""
+    
+    @State private var showMsgAlert = false
+    @State private var message: String = ""
     
     var body: some View {
         ScrollView {
@@ -29,9 +38,22 @@ struct EmulatorView: View {
             }
             
             if (emulatorList.count != 0) {
-                view_show_emulator_list
-                    .padding(.horizontal, 10)
-                    .offset(y: 20)
+                VStack {
+                    view_show_emulator_list
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 20)
+                .alert("是否确认删除？", isPresented: $showDeleteAlert) {
+                    Button("确认", role: .cancel ) {
+                        deleteAvd(name: deleteAvdName)
+                    }
+                    Button("取消", role: .cancel) { }
+                }
+                .alert("提示", isPresented: $showMsgAlert) {
+                    Button("关闭", role: .cancel) { }
+                } message: {
+                    Text(message)
+                }
             }
         }
         .task {
@@ -65,13 +87,14 @@ struct EmulatorView: View {
                 Spacer()
                 HStack {
                     if self.activeEmulatorList.contains(item.Name) {
-                        view_boot_button(name: "stop")
+                        view_boot_button(action_name: "stop", avd_name: item.Name)
                     } else {
-                        view_boot_button(name: "start")
+                        view_boot_button(action_name: "start", avd_name: item.Name)
+                            
                     }
                     view_more_button(item: item)
                 }
-                .padding(.horizontal, 15)
+                .padding(.horizontal, 10)
             }
             .frame(height: 50)
             .background(hoverItemId == item.id ? Color.gray.opacity(0.1) : Color.clear)
@@ -90,17 +113,17 @@ struct EmulatorView: View {
     }
     
     // 视图: 启动和停止按钮
-    func view_boot_button(name: String) -> some View {
+    func view_boot_button(action_name: String, avd_name: String) -> some View {
         Button(action: {
-            name == "start" ? bootEmulator() : killEmulator()
+            action_name == "start" ? bootEmulator() : killEmulator()
         }) {
-            Label("\(name)_emulator", systemImage: name == "stop" ? "stop.circle.fill": "play.fill")
+            Label("\(action_name)_emulator", systemImage: action_name == "stop" ? "stop.circle.fill": "play.fill")
                 .font(.title3)
                 .labelStyle(.iconOnly)
                 .frame(width: 30, height: 45)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(avdBootButtonStyle(avd_name: avd_name ,isHover: $isHoverBootButton))
     }
     
     // 视图：更多按钮
@@ -113,7 +136,8 @@ struct EmulatorView: View {
             
             Divider()
             Button("Delete", action: {
-                deleteAvd(name: item.Name)
+                deleteAvdName = item.Name
+                showDeleteAlert = true
             })
         } label: {
             Label("more actions", systemImage: "ellipsis")
@@ -123,7 +147,23 @@ struct EmulatorView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 10)
+        .frame(width: 35, height: 25)
+        .background(isHoverMoreButton == item.Name ? Color.gray.opacity(0.1) : Color.clear)
+        .cornerRadius(6)
+        .onHover { isHovered in
+            isHoverMoreButton = isHovered ? item.Name  : ""
+        }
+    }
+    
+    // 视图：右键菜单
+    var view_context_menu_delete: some View {
+        Section {
+            Button("Refresh Device") {
+                getEmulatorList()
+                getAvdmanagerList()
+            }
+            Divider()
+        }
     }
     
     // 视图：右键菜单
@@ -152,8 +192,8 @@ struct EmulatorView: View {
                 }
                 await getStartedEmulator(allEmulator: output)
             } catch let error {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+                message = getErrorMessage(etype: error as! AppError)
+                showMsgAlert = true
             }
         }
     }
@@ -184,8 +224,8 @@ struct EmulatorView: View {
             self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: allEmulator)
             //print("[activeEmulatorList] \(self.activeEmulatorList)")
         } catch let error {
-            let msg = getErrorMessage(etype: error as! AppError)
-            showAlertOnlyPrompt(title: "Error", msg: msg)
+            message = getErrorMessage(etype: error as! AppError)
+            showMsgAlert = true
         }
     }
     
@@ -199,8 +239,8 @@ struct EmulatorView: View {
             if success {
                 activeEmulatorList.append(avdName)
             } else if let error = error {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+                message = getErrorMessage(etype: error as! AppError)
+                showMsgAlert = true
             }
         }
     }
@@ -220,8 +260,8 @@ struct EmulatorView: View {
                     }
                 }
             } catch {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+                message = getErrorMessage(etype: error as! AppError)
+                showMsgAlert = true
             }
         }
     }
@@ -232,11 +272,16 @@ struct EmulatorView: View {
             do {
                 let output = try await AVDManager.delete(name: name)
                 if output {
-                    
+                    let tmp: [AvdItem] = self.emulatorList
+                    DispatchQueue.main.async {
+                        self.emulatorList = tmp.filter { item in
+                            return item.Name != name
+                        }
+                    }
                 }
             } catch let error {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+                message = getErrorMessage(etype: error as! AppError)
+                showMsgAlert = true
             }
         }
     }
