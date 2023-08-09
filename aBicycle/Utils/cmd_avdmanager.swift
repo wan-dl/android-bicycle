@@ -40,6 +40,11 @@ class AVDManager {
         }
         return []
     }
+    
+    // 删除
+    static func delete(name: String) async throws -> Bool {
+        return false
+    }
 }
 
 

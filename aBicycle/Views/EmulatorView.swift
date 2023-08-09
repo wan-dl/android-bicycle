@@ -69,7 +69,7 @@ struct EmulatorView: View {
                     } else {
                         view_boot_button(name: "start")
                     }
-                    view_more_button
+                    view_more_button(item: item)
                 }
                 .padding(.horizontal, 15)
             }
@@ -97,18 +97,30 @@ struct EmulatorView: View {
             Label("\(name)_emulator", systemImage: name == "stop" ? "stop.circle.fill": "play.fill")
                 .font(.title3)
                 .labelStyle(.iconOnly)
-                .frame(width: 45, height: 45)
+                .frame(width: 30, height: 45)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
     
     // 视图：更多按钮
-    var view_more_button: some View {
-        Button(action: {}) {
-            Label("edit_emulator", systemImage: "ellipsis")
+    func view_more_button(item: AvdItem) -> some View {
+        Menu {
+            Button("open Finder", action: {
+                RevealInFinder(at: item.Path)
+            })
+            .disabled(item.Path == "" ? true : false)
+            
+            Divider()
+            Button("Delete", action: {
+                deleteAvd(name: item.Name)
+            })
+        } label: {
+            Label("more actions", systemImage: "ellipsis")
                 .font(.title3)
                 .labelStyle(.iconOnly)
+                .frame(width: 30, height: 45)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 10)
@@ -208,6 +220,21 @@ struct EmulatorView: View {
                     }
                 }
             } catch {
+                let msg = getErrorMessage(etype: error as! AppError)
+                showAlertOnlyPrompt(title: "Error", msg: msg)
+            }
+        }
+    }
+    
+    // 模拟器：删除模拟器
+    func deleteAvd(name: String) {
+        Task(priority: .medium) {
+            do {
+                let output = try await AVDManager.delete(name: name)
+                if output {
+                    
+                }
+            } catch let error {
                 let msg = getErrorMessage(etype: error as! AppError)
                 showAlertOnlyPrompt(title: "Error", msg: msg)
             }

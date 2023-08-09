@@ -17,6 +17,8 @@ enum AppError: Error {
     case NotFoundActiveEmulator
     case AvdDataParsingFailed
     
+    case FailedToDeleteAvd
+    
     case FailedToGetProcessInfo
     case FailedToGetProcessID
     case FailedToKillProcess
@@ -39,6 +41,8 @@ func getErrorMessage(etype: AppError) -> String {
         return "not found avd"
     case .NotFoundActiveEmulator:
         return "Not Found Active Emulator"
+    case .FailedToDeleteAvd:
+        return "Description Failed to delete the avd."
     case .FailedToGetProcessInfo:
         return "Failed to get process information."
     case .FailedToGetProcessID:
