@@ -22,6 +22,7 @@ struct EmptyView: View {
                 .foregroundColor(.gray)
             Spacer()
         }
+        .frame(height: 300)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
     }

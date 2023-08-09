@@ -33,10 +33,6 @@ struct MainView: View {
                 .background(.white)
         }
         .navigationTitle("")
-        .onAppear() {
-//            DispatchQueue.main.async {
-//            }
-        }
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 HStack {
