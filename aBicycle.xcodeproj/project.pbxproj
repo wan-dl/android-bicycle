@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630BF3042A85294700186FBF /* AppPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BF3032A85294700186FBF /* AppPackages.swift */; };
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
 		63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* Main.swift */; };
 		63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BA92A7BF5EE00839E7B /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		630BF3032A85294700186FBF /* AppPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPackages.swift; sourceTree = "<group>"; };
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aBicycleApp.swift; sourceTree = "<group>"; };
 		63A81BA72A7BF5ED00839E7B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */,
 				63A81BC32A7BF71800839E7B /* EmulatorView.swift */,
+				630BF3032A85294700186FBF /* AppPackages.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */,
 				63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */,
 				63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */,
+				630BF3042A85294700186FBF /* AppPackages.swift in Sources */,
 				63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
 				63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */,

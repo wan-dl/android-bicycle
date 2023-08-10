@@ -9,6 +9,7 @@ import SwiftUI
 
 // 应用程序左侧导航入口
 enum SidebarNavName {
+    case App
     case Emulator
     case AdbLogcat
 }
@@ -17,7 +18,7 @@ struct MainView: View {
     @EnvironmentObject private var appDelegate: AppDelegate
     @State var isShowSilder: Bool = true
     
-    @State var activeNavName: SidebarNavName = .Emulator
+    @State var activeNavName: SidebarNavName = .App
     
     var body: some View {
         HSplitView {
@@ -45,6 +46,7 @@ struct MainView: View {
                                 
     var left_view: some View {
         VStack(alignment: .leading) {
+            sidebar(title: "应用管理", systemImage: "doc.plaintext", help: "应用管理", isActive: activeNavName == .App, action: { self.activeNavName = .App })
             sidebar(title: "Emulator", systemImage: "doc.plaintext", help: "Andriod Studio模拟器", isActive: activeNavName == .Emulator, action: { self.activeNavName = .Emulator })
             //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", help: "Logcat", isActive: activeNavName == .AdbLogcat, action: { self.activeNavName = .AdbLogcat })
         }
@@ -54,6 +56,8 @@ struct MainView: View {
     var right_view: some View {
         Section {
             switch(self.activeNavName) {
+            case .App:
+                AppPackages()
             case .Emulator:
                 EmulatorView()
             case .AdbLogcat:

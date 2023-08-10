@@ -31,3 +31,9 @@ struct AvdItem: Identifiable {
     var Skin: String = ""
     var id = UUID().uuidString
 }
+
+// 应用包信息
+struct AppPackageInfo: Identifiable {
+    let name: String
+    let id = UUID()
+}
