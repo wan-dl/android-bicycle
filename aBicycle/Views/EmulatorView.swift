@@ -110,7 +110,7 @@ struct EmulatorView: View {
                 .font(.body)
             HStack {
                 if item.Version != "" {
-                    Text("\(item.Version) \(item.ABI)")
+                    Text("\(item.Version) \(item.ABI) \(item.Skin)")
                         .font(.caption)
                         .padding([.top], 0.1)
                 } else {
