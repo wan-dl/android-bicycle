@@ -9,10 +9,6 @@ import SwiftUI
 
 struct AppPackages: View {
     
-    @State private var DeviceList: [AndroidDeviceItem] = []
-    @State private var DevicePickerData: [String] = [""]
-    @State private var selectedDevice: String = ""
-    
     @State private var selectedItemId: String = ""
     @State private var selectedItem: String = ""
     
@@ -21,33 +17,15 @@ struct AppPackages: View {
     
     var body: some View {
         ScrollView {
-            view_top
+            SelectAndroidDevice(currentSerialno: $currentSerialno)
+                .onChange(of: currentSerialno) { value in
+                    getDeviceAllPackage()
+                }
             
             if !currentDeviceAllPackageList.isEmpty {
                 view_app_package_list
             }
         }
-        .task {
-            getAdbDevices()
-        }
-    }
-    
-    // 视图：设备下拉选择
-    var view_top: some View {
-        HStack {
-            Picker("", selection: $selectedDevice) {
-                ForEach(DevicePickerData, id: \.self) { device in
-                    Text(device)
-                }
-            }
-            .pickerStyle(.menu)
-            .focusable(false)
-            .onChange(of: selectedDevice) { newValue in
-                parseCurrentSerialno()
-                getDeviceAllPackage()
-            }
-        }
-        .padding(15)
     }
     
     // 视图：App应用包
@@ -78,35 +56,11 @@ struct AppPackages: View {
     // 视图：右键菜单
     var view_context_menu: some View {
         Section {
-            
             Divider()
-            Button("Refresh") {
-                getAdbDevices()
-            }
             Button("Refresh Package List") {
                 getDeviceAllPackage()
             }
         }
-    }
-    
-    // 解析设备ID
-    func parseCurrentSerialno() {
-        if #available(macOS 13.0, *) {
-            let SerialInfo = self.selectedDevice.split(separator: " - ")
-            if let firstComponent = SerialInfo.first {
-                self.currentSerialno = String(firstComponent)
-            }
-        } else {
-            let SerialInfo = self.selectedDevice.components(separatedBy: " - ")
-            if let firstComponent = SerialInfo.first {
-                self.currentSerialno = String(firstComponent)
-            }
-        }
-    }
-    
-    // 获取adb连接的设备
-    private func getAdbDevices() {
-        getDeivces(DeviceList: $DeviceList, DevicePickerData: $DevicePickerData, selectedDevice: $selectedDevice)
     }
     
     private func getDeviceAllPackage() {
@@ -114,30 +68,6 @@ struct AppPackages: View {
     }
 }
 
-
-
-// 获取android设备列表
-fileprivate func getDeivces(DeviceList: Binding<[AndroidDeviceItem]>, DevicePickerData: Binding<[String]>, selectedDevice: Binding<String>) {
-    Task(priority: .medium) {
-        do {
-            let output = try await ADB.adbDevices()
-            DispatchQueue.main.async {
-                DeviceList.wrappedValue = []
-                if !output.isEmpty {
-                    DeviceList.wrappedValue = output
-                    let PickerData: [String] = output.map { $0.serialno + " - " + $0.model }
-                    DevicePickerData.wrappedValue = PickerData
-                    selectedDevice.wrappedValue = PickerData.isEmpty ? "" : PickerData[0]
-                }
-            }
-        } catch let error {
-            DispatchQueue.main.async {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
-            }
-        }
-    }
-}
 
 
 // 获取当前设备包名
