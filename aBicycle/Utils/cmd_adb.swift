@@ -90,9 +90,9 @@ class ADB {
     }
     
     // 通过设备ID获取所有包名
-    static func packageList(serialno: String) async throws -> [String] {
+    static func packageList(serialno: String, cmdOption: String = "-a") async throws -> [String] {
         let adbPath = try await getAdbPath()
-        let args = ["-s", serialno, "shell", "pm", "list", "packages"]
+        let args = ["-s", serialno, "shell", "pm", "list", "packages", cmdOption]
         guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: args) else {
             throw AppError.ExecutionFailed(message: "Failed to execute the command")
         }

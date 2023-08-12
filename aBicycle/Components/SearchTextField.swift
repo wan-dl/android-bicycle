@@ -13,7 +13,7 @@ struct SearchTextField: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .padding(.leading, 10)
+                //.padding(.leading, 10)
                 
             TextField("Filter", text: $text)
                 .textFieldStyle(PlainTextFieldStyle())
@@ -26,10 +26,9 @@ struct SearchTextField: View {
                         .labelStyle(.iconOnly)
                 })
                 .buttonStyle(.plain)
-                .padding(.trailing, 10)
+                //.padding(.trailing, 10)
             }
         }
-        .frame(height: 20)
-        .padding(.top, 10)
+        .padding(.top, 20)
     }
 }

@@ -33,7 +33,7 @@ struct AvdItem: Identifiable {
 }
 
 // 应用包信息
-struct AppPackageInfo: Identifiable {
+struct AppPackageInfo: Identifiable, Hashable {
     let name: String
     let id = UUID()
 }
