@@ -40,8 +40,13 @@ struct AppPackages: View {
                 }
             }
         }
-        .onTapGesture {
-            getDeviceAllPackage()
+        .onAppear() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if currentDeviceAllPackageRawData.isEmpty {
+                    self.currentSerialno = GlobalVal.currentSerialno
+                    getDeviceAllPackage()
+                }
+            }
         }
         .onChange(of: GlobalVal.currentSerialno) { value in
             self.currentSerialno = value
@@ -94,6 +99,7 @@ struct AppPackages: View {
     
     // 获取当前设备包名
     fileprivate func getDeviceAllPackage() {
+        print("------")
         if !self.currentSerialno.isEmpty {
             Task(priority: .medium) {
                 do {
