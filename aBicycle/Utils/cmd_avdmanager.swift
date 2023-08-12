@@ -98,6 +98,7 @@ class ParseAvdmanagerOutput {
         } catch let error {
             throw error
         }
+        
         if !avdList.isEmpty {
             avdLastList = avdList.compactMap { avdData in
                 guard let name = avdData["Name"],

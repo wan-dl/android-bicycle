@@ -70,7 +70,7 @@ struct AppPackages: View {
             Text(message)
         }
         .alert("确认", isPresented: $showConfirmDeleteAlert) {
-            Button("关闭", role: .cancel) {
+            Button("取消", role: .cancel) {
                 self.showConfirmDeleteAlert.toggle()
             }
             Button("删除", role: .destructive) {

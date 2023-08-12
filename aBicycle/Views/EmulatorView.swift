@@ -11,11 +11,7 @@ import SwiftUI
 struct EmulatorView: View {
     @EnvironmentObject var GlobalVal: GlobalObservable
     
-    // 存储 avdmanager list avds输出
-    @State var avdsList: [AvdItem] = []
-    
-    // 存储 emulator -list-avds输出。此命令输出结果特别快
-    @State var emulatorList: [AvdItem] = []
+    @StateObject private var viewModel = AvdViewModel()
     
     @State private var selectedItemId: String = ""
     @State private var selectedItem: String = ""
@@ -25,21 +21,17 @@ struct EmulatorView: View {
     @State private var isHoverBootButton: String = ""
     @State private var isHoverMoreButton: String = ""
     
-    @State private var activeEmulatorList: [String] = []
-    
     @State private var showDeleteAlert = false
     @State private var deleteAvdName: String = ""
     
-    @State private var showMsgAlert = false
-    @State private var message: String = ""
     
     var body: some View {
         ScrollView {
-            if emulatorList.isEmpty {
+            if viewModel.emulatorList.isEmpty {
                 EmptyView(text: "No Emulator")
             }
             
-            if (emulatorList.count != 0) {
+            if (viewModel.emulatorList.count != 0) {
                 VStack {
                     view_show_emulator_list
                 }
@@ -47,20 +39,20 @@ struct EmulatorView: View {
                 .padding(.vertical, 20)
                 .alert("是否确认删除？", isPresented: $showDeleteAlert) {
                     Button("确认", role: .cancel ) {
-                        AvdAction.deleteAvd(name: deleteAvdName, emulatorList: $emulatorList, message: $message, showMsgAlert: $showMsgAlert)
+                        viewModel.deleteAvd(name: deleteAvdName)
                     }
                     Button("取消", role: .cancel) { }
                 }
-                .alert("提示", isPresented: $showMsgAlert) {
+                .alert("提示", isPresented: $viewModel.showMsgAlert) {
                     Button("关闭", role: .cancel) { }
                 } message: {
-                    Text(message)
+                    Text(viewModel.message)
                 }
             }
         }
         .task {
-            getEmulatorList()
-            AvdAction().getAvdmanagerList(emulatorList: $emulatorList)
+            viewModel.getEmulatorList()
+            viewModel.getAvdmanagerList()
         }
         .contextMenu {
             view_context_menu
@@ -69,19 +61,19 @@ struct EmulatorView: View {
     
     // 视图：展示模拟器列表数据
     var view_show_emulator_list: some View {
-        ForEach(emulatorList) { item in
+        ForEach(viewModel.emulatorList) { item in
             HStack() {
                 Label("", systemImage: "circle.fill")
                     .font(.caption2)
                     .labelStyle(.iconOnly)
-                    .foregroundColor(self.activeEmulatorList.contains(item.Name) ? Color.green : Color.clear)
+                    .foregroundColor(viewModel.activeEmulatorList.contains(item.Name) ? Color.green : Color.clear)
                 Image("android")
                     .resizable()
                     .frame(width: 24, height: 24)
                 view_show_avd_info(item: item)
                 Spacer()
                 HStack {
-                    if self.activeEmulatorList.contains(item.Name) {
+                    if viewModel.activeEmulatorList.contains(item.Name) {
                         view_boot_button(action_name: "stop", avd_name: item.Name)
                     } else {
                         view_boot_button(action_name: "start", avd_name: item.Name)
@@ -128,10 +120,10 @@ struct EmulatorView: View {
     func view_boot_button(action_name: String, avd_name: String) -> some View {
         Button(action: {
             if action_name == "start" {
-                AvdAction().bootEmulator(avdName: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
+                viewModel.bootEmulator(avdName: avd_name)
                 GlobalVal.isEmulatorStart += 1
             } else {
-                AvdAction().killEmulator(avd_name: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
+                viewModel.killEmulator(avd_name: avd_name)
                 GlobalVal.isEmulatorStop += 1
             }
             
@@ -175,24 +167,35 @@ struct EmulatorView: View {
     }
     
     // 视图：右键菜单
-    var view_context_menu_delete: some View {
+    var view_context_menu: some View {
         Section {
             Button("Refresh Device") {
-                getEmulatorList()
-                AvdAction().getAvdmanagerList(emulatorList: $emulatorList)
+                viewModel.getEmulatorList()
+                viewModel.getAvdmanagerList()
             }
             Divider()
         }
     }
+}
+
+fileprivate final class AvdViewModel: ObservableObject {
+    // 存储 emulator -list-avds输出。此命令输出结果特别快
+    @Published var emulatorList: [AvdItem] = []
     
-    // 视图：右键菜单
-    var view_context_menu: some View {
-        Section {
-            Button("Refresh Device") {
-                getEmulatorList()
-                AvdAction().getAvdmanagerList(emulatorList: $emulatorList)
-            }
-            Divider()
+    @Published var activeEmulatorList: [String] = []
+    
+    @Published var showMsgAlert = false
+    @Published var message: String = ""
+    
+    
+    func handlerError(error: AppError) {
+        if case .ExecutionFailed(let output) = error {
+            self.message = output
+        } else {
+            self.message = getErrorMessage(etype: error)
+        }
+        DispatchQueue.main.async {
+            self.showMsgAlert = true
         }
     }
     
@@ -210,42 +213,22 @@ struct EmulatorView: View {
                     }
                 }
                 await getStartedEmulator(allEmulator: output)
-            } catch let error {
-                DispatchQueue.main.async {
-                    message = getErrorMessage(etype: error as! AppError)
-                    showMsgAlert = true
-                }
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
     
-    
-    // 通过emulator命令：获取激活的模拟器列表
-    func getStartedEmulator(allEmulator: [String]) async {
-        do {
-            self.activeEmulatorList = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: allEmulator)
-            //print("[activeEmulatorList] \(self.activeEmulatorList)")
-        } catch let error {
-            message = getErrorMessage(etype: error as! AppError)
-            showMsgAlert = true
-        }
-    }
-    
-}
-
-
-class AvdAction {
-    
     // 通过avdmanager list avd命令行获取模拟器列表
-    func getAvdmanagerList(emulatorList: Binding<[AvdItem]>) {
+    func getAvdmanagerList() {
         Task(priority: .high) {
             do {
                 let output = try await AVDManager.getAvdList()
                 if !output.isEmpty {
-                    let newArray = replaceMatchingItems(in: emulatorList.wrappedValue, withItemsFrom: output)
+                    let newArray = replaceMatchingItems(in: emulatorList, withItemsFrom: output)
                     if !newArray.isEmpty {
                         DispatchQueue.main.async {
-                            emulatorList.wrappedValue = newArray
+                            self.emulatorList = newArray
                         }
                     }
                 }
@@ -255,61 +238,71 @@ class AvdAction {
         }
     }
     
+    // 通过emulator命令：获取激活的模拟器列表
+    func getStartedEmulator(allEmulator: [String]) async {
+        do {
+            let output = try await AndroidEmulatorManager.getActiveEmulatorList(EmulatorList: allEmulator)
+            DispatchQueue.main.async {
+                self.activeEmulatorList = output
+            }
+        } catch {
+            if let appError = error as? AppError {
+                handlerError(error: appError)
+            } else {
+                print("[error] getStartedEmulator(): \(error)")
+            }
+        }
+    }
+    
     // 模拟器：删除模拟器
-    static func deleteAvd(name: String, emulatorList: Binding<[AvdItem]>, message: Binding<String>, showMsgAlert: Binding<Bool>) {
+    func deleteAvd(name: String) {
         Task(priority: .medium) {
             do {
                 let output = try await AVDManager.delete(name: name)
                 if output {
-                    let tmp: [AvdItem] = emulatorList.wrappedValue
+                    let tmp: [AvdItem] = self.emulatorList
                     DispatchQueue.main.async {
-                        emulatorList.wrappedValue = tmp.filter { item in
+                        self.emulatorList = tmp.filter { item in
                             return item.Name != name
                         }
                     }
                 }
-            } catch let error {
-                DispatchQueue.main.async {
-                    message.wrappedValue = getErrorMessage(etype: error as! AppError)
-                    showMsgAlert.wrappedValue = true
-                }
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
     
     // 模拟器: 通过emulator命令启动
-    func bootEmulator(avdName: String, activeEmulatorList: Binding<[String]>, message: Binding<String>, showMsgAlert: Binding<Bool>) {
+    func bootEmulator(avdName: String) {
         AndroidEmulatorManager.startEmulator(emulatorName: avdName) { success, error in
             if success {
                 DispatchQueue.main.async {
-                    activeEmulatorList.wrappedValue.append(avdName)
+                    self.activeEmulatorList.append(avdName)
                 }
-            } else if let error = error {
+            } else {
                 DispatchQueue.main.async {
-                    message.wrappedValue = getErrorMessage(etype: error as! AppError)
-                    showMsgAlert.wrappedValue = true
+                    self.message = String(describing: error)
+                    self.showMsgAlert = true
                 }
             }
         }
     }
     
     // 模拟器：停止杀死模拟器
-    func killEmulator(avd_name: String, activeEmulatorList: Binding<[String]>, message: Binding<String>, showMsgAlert: Binding<Bool>) {
+    func killEmulator(avd_name: String) {
         Task {
             do {
                 let output = try await AndroidEmulatorManager.killEmulator(emulatorName: avd_name)
                 if output == true {
                     DispatchQueue.main.async {
-                        activeEmulatorList.wrappedValue.removeAll { element in
+                        self.activeEmulatorList.removeAll { element in
                             return element == avd_name
                         }
                     }
                 }
-            } catch {
-                DispatchQueue.main.async {
-                    message.wrappedValue = getErrorMessage(etype: error as! AppError)
-                    showMsgAlert.wrappedValue = true
-                }
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
