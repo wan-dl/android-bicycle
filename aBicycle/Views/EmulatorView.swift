@@ -9,6 +9,8 @@ import SwiftUI
 
 
 struct EmulatorView: View {
+    @EnvironmentObject var GlobalVal: GlobalObservable
+    
     // 存储 avdmanager list avds输出
     @State var avdsList: [AvdItem] = []
     
@@ -125,9 +127,14 @@ struct EmulatorView: View {
     // 视图: 启动和停止按钮
     func view_boot_button(action_name: String, avd_name: String) -> some View {
         Button(action: {
-            action_name == "start"
-            ? AvdAction().bootEmulator(avdName: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
-            : AvdAction().killEmulator(avd_name: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
+            if action_name == "start" {
+                AvdAction().bootEmulator(avdName: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
+                GlobalVal.isEmulatorStart += 1
+            } else {
+                AvdAction().killEmulator(avd_name: avd_name, activeEmulatorList: $activeEmulatorList, message: $message, showMsgAlert: $showMsgAlert)
+                GlobalVal.isEmulatorStop += 1
+            }
+            
         }) {
             Label("\(action_name)_emulator", systemImage: action_name == "stop" ? "stop.circle.fill": "play.fill")
                 .font(.title3)
@@ -231,7 +238,7 @@ class AvdAction {
     
     // 通过avdmanager list avd命令行获取模拟器列表
     func getAvdmanagerList(emulatorList: Binding<[AvdItem]>) {
-        Task(priority: .medium) {
+        Task(priority: .high) {
             do {
                 let output = try await AVDManager.getAvdList()
                 if !output.isEmpty {

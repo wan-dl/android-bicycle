@@ -50,7 +50,7 @@ struct AppPackages: View {
                 view_app_package_list
             } else {
                 view_empty
-            } 
+            }
         }
         .onAppear() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

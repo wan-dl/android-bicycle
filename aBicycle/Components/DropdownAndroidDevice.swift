@@ -38,18 +38,28 @@ struct DropdownAndroidDevice: View {
             }
         }
         .frame(width: 170, alignment: .trailing)
-        .onTapGesture {
-            self.isMenuVisible.toggle()
-            getDeivceList(DeviceList: $DeviceList, selectedDevice: $selectedDevice)
-        }
         .popover(isPresented: $isMenuVisible, arrowEdge: .bottom) {
             view_popover
         }
+        .onTapGesture {
+            self.isMenuVisible.toggle()
+            getDevices()
+        }
         .onAppear() {
-            getDeivceList(DeviceList: $DeviceList, selectedDevice: $selectedDevice)
+            getDevices()
         }
         .onChange(of: selectedDevice) { item in
             GlobalVal.currentSerialno = item.serialno
+        }
+        .onChange(of: GlobalVal.isEmulatorStop) { value in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                getDevices()
+            }
+        }
+        .onChange(of: GlobalVal.isEmulatorStart) { value in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                getDevices()
+            }
         }
     }
     
@@ -94,16 +104,21 @@ struct DropdownAndroidDevice: View {
             isMenuVisible = false
         }
     }
+    
+    private func getDevices() {
+        getAdbDeivceList(DeviceList: $DeviceList, selectedDevice: $selectedDevice)
+    }
 }
 
 
 // 获取android设备列表
-fileprivate func getDeivceList(DeviceList: Binding<[AndroidDeviceItem]>, selectedDevice: Binding<AndroidDeviceItem>) {
+fileprivate func getAdbDeivceList(DeviceList: Binding<[AndroidDeviceItem]>, selectedDevice: Binding<AndroidDeviceItem>) {
     Task(priority: .medium) {
         do {
             let output = try await ADB.adbDevices()
             DispatchQueue.main.async {
                 DeviceList.wrappedValue = []
+                selectedDevice.wrappedValue = AndroidDeviceItem(model: "", serialno: "")
                 if !output.isEmpty {
                     DeviceList.wrappedValue = output
                     let _: [String] = output.map { $0.serialno + " - " + $0.model }

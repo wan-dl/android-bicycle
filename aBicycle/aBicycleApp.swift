@@ -29,6 +29,8 @@ struct aBicycleApp: App {
 
 class GlobalObservable: ObservableObject {
     @Published var currentSerialno: String = ""
+    @Published var isEmulatorStart: Int = 0
+    @Published var isEmulatorStop: Int = 0
 }
 
 
