@@ -1,5 +1,5 @@
 //
-//  SelectAndroidDevice.swift
+//  PickerAndroidDevice.swift
 //  aBicycle
 //
 //  Created by 1 on 8/11/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectAndroidDevice: View {
+struct PickerAndroidDevice: View {
     
     @State private var DeviceList: [AndroidDeviceItem] = []
     @State private var DevicePickerData: [String] = [""]

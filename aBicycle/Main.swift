@@ -15,7 +15,9 @@ enum SidebarNavName {
 }
 
 struct MainView: View {
+    
     @EnvironmentObject private var appDelegate: AppDelegate
+    
     @State var isShowSilder: Bool = true
     
     @State var activeNavName: SidebarNavName = .App
@@ -39,6 +41,8 @@ struct MainView: View {
                 HStack {
                     // 工具栏：折叠图标
                     showSilder
+                    
+                    DropdownAndroidDevice()
                 }
             }
         }

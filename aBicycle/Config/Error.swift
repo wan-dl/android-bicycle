@@ -11,7 +11,7 @@ enum AppError: Error {
     case PathNotFound
     case PathValid
     case CustomPathVaild
-    case ExecutionFailed
+    case ExecutionFailed(message: String)
     
     case NotFoundEmulator
     case NotFoundActiveEmulator

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct aBicycleApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -14,6 +15,7 @@ struct aBicycleApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(GlobalObservable())
         }
         
         #if os(macOS)
@@ -24,6 +26,10 @@ struct aBicycleApp: App {
     }
 }
 
+
+class GlobalObservable: ObservableObject {
+    @Published var currentSerialno: String = ""
+}
 
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {

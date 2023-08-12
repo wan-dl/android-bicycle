@@ -31,7 +31,7 @@ class AVDManager {
     static func getAvdList() async throws -> [AvdItem] {
         let _ = try await getAvdmanagerPathPath()
         guard let output = try await run_simple_command(executableURL: avdmanagerPath!, arguments: ["list", "avd"]) else {
-            throw AppError.ExecutionFailed
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
         }
         
         let outputStr = output.joined(separator: ", ")
@@ -44,7 +44,7 @@ class AVDManager {
     // 删除
     static func delete(name: String) async throws -> Bool {
         guard let output = try await run_simple_command(executableURL: avdmanagerPath!, arguments: ["delete", "avd3", "-n", name]) else {
-            throw AppError.ExecutionFailed
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
         }
         let outputStr = output.joined(separator: ", ")
         print("[删除结果] \(outputStr)")

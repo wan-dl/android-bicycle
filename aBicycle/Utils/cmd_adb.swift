@@ -67,7 +67,7 @@ class ADB {
     static func adbDevices() async throws -> [AndroidDeviceItem] {
         let adbPath = try await getAdbPath()
         guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: ["devices", "-l"]) else {
-            throw AppError.ExecutionFailed
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
         }
         if outputList.count == 1 {
             return []
@@ -94,7 +94,7 @@ class ADB {
         let adbPath = try await getAdbPath()
         let args = ["-s", serialno, "shell", "pm", "list", "packages"]
         guard let outputList = try await run_simple_command(executableURL: adbPath, arguments: args) else {
-            throw AppError.ExecutionFailed
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
         }
         
         if outputList.count == 0 {
@@ -105,6 +105,20 @@ class ADB {
         allPackageList = outputList.map { $0.hasPrefix("package:") ? String($0.dropFirst("package:".count)) : $0 }
         let lastData = allPackageList.sorted().filter { $0 != "" }.reversed()
         return Array(lastData)
+    }
+    
+    static func uninstallApp(serialno: String, packageName: String) async throws -> Bool {
+        let args = ["-s", serialno, "uninstall", packageName]
+        guard let outputList = try await run_simple_command(executableURL: osAdbPath!, arguments: args) else {
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
+        }
+        let outputStr = outputList.joined(separator: "")
+        print("[uninstallApp] \(outputStr)")
+        if !outputStr.contains("Success") {
+            let errorMessage = "Uninstall failed. Output: \(outputStr)"
+            throw AppError.ExecutionFailed(message: errorMessage)
+        }
+        return true
     }
 }
 
