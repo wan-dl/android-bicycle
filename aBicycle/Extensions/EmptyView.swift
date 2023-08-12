@@ -8,7 +8,15 @@
 import SwiftUI
 
 struct EmptyView: View {
-    var text: String
+    let text: String
+    let rightMenu: String?
+    let action: (() -> Void)?
+    
+    init(text: String, rightMenu: String? = nil, action: (() -> Void)? = nil) {
+        self.text = text
+        self.rightMenu = rightMenu
+        self.action = action
+    }
     
     var body: some View {
         VStack {
@@ -25,5 +33,12 @@ struct EmptyView: View {
         .frame(height: 300)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
+        .contextMenu {
+            if let rightMenu = rightMenu, !rightMenu.isEmpty, let action = action {
+                Button(rightMenu) {
+                    action()
+                }
+            }
+        }
     }
 }
