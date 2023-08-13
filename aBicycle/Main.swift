@@ -10,9 +10,11 @@ import SwiftUI
 // 应用程序左侧导航入口
 enum SidebarNavName {
     case App
+    case install
     case Emulator
     case AdbLogcat
 }
+
 
 struct MainView: View {
     
@@ -21,7 +23,7 @@ struct MainView: View {
     
     @State var isShowSilder: Bool = true
     
-    @State var activeNavName: SidebarNavName = .App
+    @State var activeNav: SidebarNavName = .install
     
     var body: some View {
         HSplitView {
@@ -51,18 +53,21 @@ struct MainView: View {
                                 
     var left_view: some View {
         VStack(alignment: .leading) {
-            sidebar(title: "应用管理", systemImage: "doc.plaintext", help: "应用管理", isActive: activeNavName == .App, action: { self.activeNavName = .App })
-            sidebar(title: "Emulator", systemImage: "doc.plaintext", help: "Andriod Studio模拟器", isActive: activeNavName == .Emulator, action: { self.activeNavName = .Emulator })
-            //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", help: "Logcat", isActive: activeNavName == .AdbLogcat, action: { self.activeNavName = .AdbLogcat })
+            sidebar(title: "应用管理", systemImage: "doc.plaintext", isActive: activeNav == .App, action: { self.activeNav = .App })
+            sidebar(title: "应用安装", systemImage: "doc.plaintext", isActive: activeNav == .install, action: { self.activeNav = .install })
+            sidebar(title: "Emulator", systemImage: "doc.plaintext", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
+            //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     var right_view: some View {
         Section {
-            switch(self.activeNavName) {
+            switch(self.activeNav) {
             case .App:
                 AppPackages()
+            case .install:
+                AppInstall()
             case .Emulator:
                 EmulatorView()
             case .AdbLogcat:

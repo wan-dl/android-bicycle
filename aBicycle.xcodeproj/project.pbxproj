@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		630BF3042A85294700186FBF /* AppPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BF3032A85294700186FBF /* AppPackages.swift */; };
+		63113C752A8872F0004F5500 /* utils_date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63113C742A8872F0004F5500 /* utils_date.swift */; };
+		6339F01A2A87D39D00A032D7 /* AppInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6339F0192A87D39D00A032D7 /* AppInstall.swift */; };
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
 		63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* Main.swift */; };
 		63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BA92A7BF5EE00839E7B /* Assets.xcassets */; };
@@ -38,6 +40,8 @@
 
 /* Begin PBXFileReference section */
 		630BF3032A85294700186FBF /* AppPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPackages.swift; sourceTree = "<group>"; };
+		63113C742A8872F0004F5500 /* utils_date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_date.swift; sourceTree = "<group>"; };
+		6339F0192A87D39D00A032D7 /* AppInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstall.swift; sourceTree = "<group>"; };
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aBicycleApp.swift; sourceTree = "<group>"; };
 		63A81BA72A7BF5ED00839E7B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
 				63BBF67F2A7F541E00C2621B /* utis_path.swift */,
 				63FDD36C2A831B0300632CCA /* utils_os.swift */,
+				63113C742A8872F0004F5500 /* utils_date.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 				63A81BC12A7BF6FD00839E7B /* AdbLogcatView.swift */,
 				63A81BC32A7BF71800839E7B /* EmulatorView.swift */,
 				630BF3032A85294700186FBF /* AppPackages.swift */,
+				6339F0192A87D39D00A032D7 /* AppInstall.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -263,6 +269,7 @@
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
 				E574BCD42A86008A00B48F2D /* SearchTextField.swift in Sources */,
 				63BBF6822A7F568400C2621B /* Alert.swift in Sources */,
+				6339F01A2A87D39D00A032D7 /* AppInstall.swift in Sources */,
 				E5F144702A82459700570B5A /* Types.swift in Sources */,
 				63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */,
 				63A81BC22A7BF6FD00839E7B /* AdbLogcatView.swift in Sources */,
@@ -275,6 +282,7 @@
 				63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */,
 				63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */,
 				630BF3042A85294700186FBF /* AppPackages.swift in Sources */,
+				63113C752A8872F0004F5500 /* utils_date.swift in Sources */,
 				63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
 				E574BCD22A85FEF300B48F2D /* DropdownAndroidDevice.swift in Sources */,

@@ -23,7 +23,7 @@ private struct LeftNavButtonStyle: ButtonStyle {
 struct sidebar: View {
     let title: String
     let systemImage: String
-    let help: String
+    let help: String = ""
     let isActive: Bool
     let action: () -> Void
     

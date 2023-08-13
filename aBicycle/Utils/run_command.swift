@@ -26,12 +26,14 @@ func run_simple_command(executableURL: String, arguments: [String], action: Stri
     
     let pipe = Pipe()
     process.standardOutput = pipe
+    process.standardError = pipe
 
     do {
         try process.run()
         
         if isWait {
             process.waitUntilExit()
+            //try await Task.sleep(nanoseconds: 1_000_000_000)
         }
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()

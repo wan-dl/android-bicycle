@@ -107,6 +107,7 @@ class ADB {
         return Array(lastData)
     }
     
+    // 卸载App
     static func uninstallApp(serialno: String, packageName: String) async throws -> Bool {
         let args = ["-s", serialno, "uninstall", packageName]
         guard let outputList = try await run_simple_command(executableURL: osAdbPath!, arguments: args) else {
@@ -116,6 +117,25 @@ class ADB {
         print("[uninstallApp] \(outputStr)")
         if !outputStr.contains("Success") {
             let errorMessage = "Uninstall failed. Output: \(outputStr)"
+            throw AppError.ExecutionFailed(message: errorMessage)
+        }
+        return true
+    }
+    
+    // 安装App
+    static func installApp(serialno: String = "", apkPath: String) async throws -> Bool {
+        var args = ["install", apkPath]
+        if !serialno.isEmpty {
+            args = ["-s", serialno, "install", apkPath]
+        }
+        guard let outputList = try await run_simple_command(executableURL: osAdbPath!, arguments: args) else {
+            throw AppError.ExecutionFailed(message: "Failed to execute the command")
+        }
+        
+        let outputStr = outputList.joined(separator: ". ")
+        print("[installApp] \(outputStr)")
+        if !outputStr.contains("Success") {
+            let errorMessage = "installation failed. Reason: \(outputStr)"
             throw AppError.ExecutionFailed(message: errorMessage)
         }
         return true

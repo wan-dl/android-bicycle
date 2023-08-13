@@ -120,7 +120,7 @@ struct EmulatorView: View {
     func view_boot_button(action_name: String, avd_name: String) -> some View {
         Button(action: {
             if action_name == "start" {
-                viewModel.bootEmulator(avdName: avd_name)
+                bootEmulator(avdName: avd_name)
                 GlobalVal.isEmulatorStart += 1
             } else {
                 viewModel.killEmulator(avd_name: avd_name)
@@ -174,6 +174,22 @@ struct EmulatorView: View {
                 viewModel.getAvdmanagerList()
             }
             Divider()
+        }
+    }
+    
+    // 模拟器: 通过emulator命令启动
+    func bootEmulator(avdName: String) {
+        AndroidEmulatorManager.startEmulator(emulatorName: avdName) { success, error in
+            if success {
+                DispatchQueue.main.async {
+                    viewModel.activeEmulatorList.append(avdName)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    viewModel.message = String(describing: error)
+                    viewModel.showMsgAlert = true
+                }
+            }
         }
     }
 }
@@ -273,21 +289,7 @@ fileprivate final class AvdViewModel: ObservableObject {
         }
     }
     
-    // 模拟器: 通过emulator命令启动
-    func bootEmulator(avdName: String) {
-        AndroidEmulatorManager.startEmulator(emulatorName: avdName) { success, error in
-            if success {
-                DispatchQueue.main.async {
-                    self.activeEmulatorList.append(avdName)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.message = String(describing: error)
-                    self.showMsgAlert = true
-                }
-            }
-        }
-    }
+   
     
     // 模拟器：停止杀死模拟器
     func killEmulator(avd_name: String) {
