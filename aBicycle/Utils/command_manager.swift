@@ -42,7 +42,7 @@ class CommandLineManager {
         }
         
         if let cfgName = SettingsConfigOptions[toolName] {
-            if let cfgPath = self.configFileContent[cfgName] as? String {
+            if let cfgPath = self.configFileContent[cfgName] as? String, !cfgPath.isEmpty {
                 toolPath = cfgPath
             } else {
                 useConfigAndroidHome(toolName: toolName)

@@ -77,24 +77,19 @@ fileprivate final class SetConf: ObservableObject{
     func updateChange(key: String, value: String) {
         print("TextField 内容变化：\(key) \(value)")
         
-        if key == "ConfigAndroidHOME" && !isDirectoryValid(atPath: value) {
-            handleMsg(msg: "Android SDK目录")
-            return
-        }
-        
-        if key == "ConfigADBPath" && !isPathValid(value, endsWith: "adb") {
-            handleMsg(msg: "ADB路径无效")
-            return
-        }
-        
-        if key == "ConfigEmulatorPath" && !isPathValid(value, endsWith: "emulator") {
-            handleMsg(msg: "emulator路径无效")
-            return
-        }
-        
-        if key == "ConfigAvdmanagerPath" && !isPathValid(value, endsWith: "avdmanager") {
-            handleMsg(msg: "avdmanager路径无效")
-            return
+        if !value.isEmpty {
+            switch key {
+               case "ConfigAndroidHOME":
+                   handleInvalidPath(value, requiredExtension: nil, errorMessage: "Android SDK目录")
+               case "ConfigADBPath":
+                   handleInvalidPath(value, requiredExtension: "adb", errorMessage: "ADB路径无效")
+               case "ConfigEmulatorPath":
+                   handleInvalidPath(value, requiredExtension: "emulator", errorMessage: "emulator路径无效")
+               case "ConfigAvdmanagerPath":
+                   handleInvalidPath(value, requiredExtension: "avdmanager", errorMessage: "avdmanager路径无效")
+               default:
+                   break
+            }
         }
         
         do {
@@ -105,6 +100,11 @@ fileprivate final class SetConf: ObservableObject{
         } catch {
             handleMsg(msg: "保存配置发生错误")
         }
+    }
+    
+    func handleInvalidPath(_ path: String, requiredExtension: String?, errorMessage: String) {
+        guard !isPathValid(path, endsWith: requiredExtension) else { return }
+        handleMsg(msg: errorMessage)
     }
     
     func readSetting() {
