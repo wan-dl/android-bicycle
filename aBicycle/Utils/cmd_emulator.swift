@@ -19,7 +19,7 @@ class AndroidEmulatorManager {
         
         do {
             let cmd = CommandLineManager()
-            let toolPath = try await cmd.getToolPath(toolName: "emulator", settingKey: "ConfigEmulatorPath")
+            let toolPath = try await cmd.getToolPath(toolName: "emulator")
             osEmulatorPath = toolPath
             return toolPath
         } catch {

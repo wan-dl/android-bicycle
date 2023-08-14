@@ -19,7 +19,7 @@ class AVDManager {
         
         do {
             let cmd = CommandLineManager()
-            let toolPath = try await cmd.getToolPath(toolName: "avdmanager", settingKey: "ConfigAvdmanagerPath")
+            let toolPath = try await cmd.getToolPath(toolName: "avdmanager")
             avdmanagerPath = toolPath
             return toolPath
         } catch {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct SettingsGeneralView: View {
     
     @StateObject private var hset = SetConf()

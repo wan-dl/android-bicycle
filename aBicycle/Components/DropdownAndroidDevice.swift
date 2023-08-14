@@ -19,6 +19,9 @@ struct DropdownAndroidDevice: View {
     @State private var DeviceList: [AndroidDeviceItem] = []
     @State private var selectedDevice: AndroidDeviceItem = AndroidDeviceItem(model: "", serialno: "")
     
+    @State private var message: String = ""
+    @State private var showMsgAlert: Bool = false
+    
     var body: some View {
         HStack {
             Image(systemName: "iphone.rear.camera")
@@ -60,6 +63,10 @@ struct DropdownAndroidDevice: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
                 getDevices()
             }
+        }.alert("提示", isPresented: $showMsgAlert) {
+            Button("关闭", role: .cancel) { }
+        } message: {
+            Text(message)
         }
     }
     
@@ -105,31 +112,38 @@ struct DropdownAndroidDevice: View {
         }
     }
     
+    // 获取android设备列表
     private func getDevices() {
-        getAdbDeivceList(DeviceList: $DeviceList, selectedDevice: $selectedDevice)
-    }
-}
-
-
-// 获取android设备列表
-fileprivate func getAdbDeivceList(DeviceList: Binding<[AndroidDeviceItem]>, selectedDevice: Binding<AndroidDeviceItem>) {
-    Task(priority: .medium) {
-        do {
-            let output = try await ADB.adbDevices()
-            DispatchQueue.main.async {
-                DeviceList.wrappedValue = []
-                selectedDevice.wrappedValue = AndroidDeviceItem(model: "", serialno: "")
-                if !output.isEmpty {
-                    DeviceList.wrappedValue = output
-                    let _: [String] = output.map { $0.serialno + " - " + $0.model }
-                    selectedDevice.wrappedValue = output[0]
+        Task(priority: .medium) {
+            do {
+                let output = try await ADB.adbDevices()
+                DispatchQueue.main.async {
+                    DeviceList = []
+                    selectedDevice = AndroidDeviceItem(model: "", serialno: "")
+                    if !output.isEmpty {
+                        DeviceList = output
+                        let _: [String] = output.map { $0.serialno + " - " + $0.model }
+                        selectedDevice = output[0]
+                    }
                 }
-            }
-        } catch let error {
-            DispatchQueue.main.async {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+            } catch {
+                print("--->", error)
+                handlerError(error: error as! AppError)
             }
         }
     }
+    
+    private func handlerError(error: AppError) {
+        if case .ExecutionFailed(let output) = error {
+            message = output
+        } else {
+            message = getErrorMessage(etype: error)
+        }
+        DispatchQueue.main.async {
+            showMsgAlert = true
+        }
+    }
 }
+
+
+

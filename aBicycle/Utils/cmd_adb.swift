@@ -55,7 +55,7 @@ class ADB {
         
         do {
             let cmd = CommandLineManager()
-            let toolPath = try await cmd.getToolPath(toolName: "adb", settingKey: "ConfigADBPath")
+            let toolPath = try await cmd.getToolPath(toolName: "adb")
             osAdbPath = toolPath
             return toolPath
         } catch {

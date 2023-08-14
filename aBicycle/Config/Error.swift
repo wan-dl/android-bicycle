@@ -8,7 +8,7 @@
 import Foundation
 
 enum AppError: Error {
-    case PathNotFound
+    case PathNotFound(message: String?)
     case PathValid
     case CustomPathVaild
     case ExecutionFailed(message: String)
