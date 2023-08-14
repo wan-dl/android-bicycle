@@ -28,6 +28,7 @@
 		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
 		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
+		63D4109B2A8A6DD300FDE83E /* SettingsGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */; };
 		63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FDD36C2A831B0300632CCA /* utils_os.swift */; };
 		E50338292A83694600EB85A0 /* style.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50338282A83694600EB85A0 /* style.swift */; };
 		E574BCD22A85FEF300B48F2D /* DropdownAndroidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574BCD12A85FEF300B48F2D /* DropdownAndroidDevice.swift */; };
@@ -62,6 +63,7 @@
 		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
 		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
+		63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralView.swift; sourceTree = "<group>"; };
 		63FDD36C2A831B0300632CCA /* utils_os.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_os.swift; sourceTree = "<group>"; };
 		E50338282A83694600EB85A0 /* style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = style.swift; sourceTree = "<group>"; };
 		E574BCD12A85FEF300B48F2D /* DropdownAndroidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownAndroidDevice.swift; sourceTree = "<group>"; };
@@ -176,8 +178,9 @@
 		63C236E12A7D50340019466C /* ViewsMenu */ = {
 			isa = PBXGroup;
 			children = (
-				63C236E22A7D505E0019466C /* Settings.swift */,
 				63CD032F2A7F3CF900E7F993 /* handleSettings.swift */,
+				63C236E22A7D505E0019466C /* Settings.swift */,
+				63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */,
 			);
 			path = ViewsMenu;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
 				63A81BBB2A7BF6A600839E7B /* cmd_emulator.swift in Sources */,
 				E574BCD42A86008A00B48F2D /* SearchTextField.swift in Sources */,
+				63D4109B2A8A6DD300FDE83E /* SettingsGeneralView.swift in Sources */,
 				63BBF6822A7F568400C2621B /* Alert.swift in Sources */,
 				6339F01A2A87D39D00A032D7 /* AppInstall.swift in Sources */,
 				E5F144702A82459700570B5A /* Types.swift in Sources */,

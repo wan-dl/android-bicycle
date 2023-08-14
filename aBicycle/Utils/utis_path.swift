@@ -17,3 +17,16 @@ func isPathValid(_ path: String, endsWith suffix: String) -> Bool {
     
     return false
 }
+
+
+// 判断目录是否有效
+func isDirectoryValid(atPath path: String) -> Bool {
+    let fileManager = FileManager.default
+    var isDirectory: ObjCBool = false
+    
+    if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
+        return isDirectory.boolValue
+    } else {
+        return false
+    }
+}
