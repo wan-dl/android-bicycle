@@ -30,6 +30,9 @@ struct AdbLogcatView: View {
     @State private var selectedPriority: LogcatOptionPriority = .All
     @State private var selectedPackageName: String = ""
     
+    @State private var message: String = ""
+    @State private var showMsgAlert: Bool = false
+    
     var body: some View {
         VStack {
             top_view
@@ -48,6 +51,11 @@ struct AdbLogcatView: View {
         }
         .task {
             getDeivces()
+        }
+        .alert("提示", isPresented: $showMsgAlert) {
+            Button("关闭", role: .cancel) { }
+        } message: {
+            Text(message)
         }
     }
     
@@ -122,9 +130,8 @@ struct AdbLogcatView: View {
                         }
                     }
                 }
-            } catch let error {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
@@ -141,9 +148,8 @@ struct AdbLogcatView: View {
                 if !output.isEmpty {
                     self.currentDeviceAllPackageList.append(contentsOf: output)
                 }
-            } catch {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
@@ -204,10 +210,11 @@ struct AdbLogcatView: View {
             }
             .store(in: &logcat.cancellables)
     }
-}
-
-struct AdbLogcatView_Previews: PreviewProvider {
-    static var previews: some View {
-        AdbLogcatView()
+    
+    private func handlerError(error: AppError) {
+        DispatchQueue.main.async {
+            message = error.description
+            showMsgAlert = true
+        }
     }
 }

@@ -190,12 +190,8 @@ struct AppPackages: View {
     }
     
     private func handlerError(error: AppError) {
-        if case .ExecutionFailed(let output) = error {
-            message = output
-        } else {
-            message = getErrorMessage(etype: error)
-        }
         DispatchQueue.main.async {
+            message = error.description
             showMsgAlert = true
         }
     }

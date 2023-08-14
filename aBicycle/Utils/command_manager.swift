@@ -60,7 +60,21 @@ class CommandLineManager {
     private func useConfigAndroidHome(toolName: String) {
         if let AndroidHome = self.configFileContent["ConfigAndroidHOME"] as? String {
             let basePath = URL(string: AndroidHome)!
-            let fileName = "platform-tools/adb"
+            
+            var fileName: String = toolName
+            if toolName == "adb" {
+                fileName = "platform-tools/adb"
+            }
+            if toolName == "avdmanager" {
+                fileName = "cmdline-tools/latest/bin/avdmanager"
+            }
+            if toolName == "sdkmanager" {
+                fileName = "cmdline-tools/latest/bin/sdkmanager"
+            }
+            if toolName == "emulator" {
+                fileName = "emulator/emulator"
+            }
+            
             let fullPath = basePath.appendingPathComponent(fileName).path
             if isPathValid(fullPath) {
                 toolPath = fullPath

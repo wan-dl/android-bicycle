@@ -43,11 +43,6 @@ struct EmulatorView: View {
                     }
                     Button("取消", role: .cancel) { }
                 }
-                .alert("提示", isPresented: $viewModel.showMsgAlert) {
-                    Button("关闭", role: .cancel) { }
-                } message: {
-                    Text(viewModel.message)
-                }
             }
         }
         .task {
@@ -56,6 +51,11 @@ struct EmulatorView: View {
         }
         .contextMenu {
             view_context_menu
+        }
+        .alert("提示", isPresented: $viewModel.showMsgAlert) {
+            Button("关闭", role: .cancel) { }
+        } message: {
+            Text(viewModel.message)
         }
     }
     
@@ -204,13 +204,9 @@ fileprivate final class AvdViewModel: ObservableObject {
     @Published var message: String = ""
     
     
-    func handlerError(error: AppError) {
-        if case .ExecutionFailed(let output) = error {
-            self.message = output
-        } else {
-            self.message = getErrorMessage(etype: error)
-        }
+    private func handlerError(error: AppError) {
         DispatchQueue.main.async {
+            self.message = error.description
             self.showMsgAlert = true
         }
     }
@@ -230,6 +226,7 @@ fileprivate final class AvdViewModel: ObservableObject {
                 }
                 await getStartedEmulator(allEmulator: output)
             } catch let error as AppError {
+                print("-2034-239423-04923-", error)
                 handlerError(error: error)
             }
         }

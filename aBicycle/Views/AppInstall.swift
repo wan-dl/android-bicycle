@@ -117,7 +117,7 @@ struct AppInstall: View {
             if case .ExecutionFailed(let output) = error {
                 messageList.append( getCurrentFormattedTime() + " " + output )
             } else {
-                messageList.append( getCurrentFormattedTime() + " " + getErrorMessage(etype: error) )
+                messageList.append( getCurrentFormattedTime() + " " + error.description )
             }
         }
     }

@@ -63,7 +63,8 @@ struct DropdownAndroidDevice: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
                 getDevices()
             }
-        }.alert("提示", isPresented: $showMsgAlert) {
+        }
+        .alert("提示", isPresented: $showMsgAlert) {
             Button("关闭", role: .cancel) { }
         } message: {
             Text(message)
@@ -126,20 +127,15 @@ struct DropdownAndroidDevice: View {
                         selectedDevice = output[0]
                     }
                 }
-            } catch {
-                print("--->", error)
-                handlerError(error: error as! AppError)
+            } catch let error as AppError {
+                handlerError(error: error)
             }
         }
     }
     
     private func handlerError(error: AppError) {
-        if case .ExecutionFailed(let output) = error {
-            message = output
-        } else {
-            message = getErrorMessage(etype: error)
-        }
         DispatchQueue.main.async {
+            message = error.description
             showMsgAlert = true
         }
     }

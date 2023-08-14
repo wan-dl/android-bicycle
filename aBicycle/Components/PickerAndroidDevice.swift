@@ -15,6 +15,9 @@ struct PickerAndroidDevice: View {
     
     @Binding var currentSerialno: String
     
+    @State private var message: String = ""
+    @State private var showMsgAlert: Bool = false
+    
     var body: some View {
         HStack {
             Picker("", selection: $selectedDevice) {
@@ -29,8 +32,13 @@ struct PickerAndroidDevice: View {
             }
         }
         .padding(15)
+        .alert("提示", isPresented: $showMsgAlert) {
+            Button("关闭", role: .cancel) { }
+        } message: {
+            Text(message)
+        }
         .task {
-            getDeivces(DeviceList: $DeviceList, DevicePickerData: $DevicePickerData, selectedDevice: $selectedDevice)
+            getDeivces()
         }
     }
     
@@ -48,28 +56,30 @@ struct PickerAndroidDevice: View {
             }
         }
     }
-}
-
-
-// 获取android设备列表
-fileprivate func getDeivces(DeviceList: Binding<[AndroidDeviceItem]>, DevicePickerData: Binding<[String]>, selectedDevice: Binding<String>) {
-    Task(priority: .medium) {
-        do {
-            let output = try await ADB.adbDevices()
-            DispatchQueue.main.async {
-                DeviceList.wrappedValue = []
-                if !output.isEmpty {
-                    DeviceList.wrappedValue = output
-                    let PickerData: [String] = output.map { $0.serialno + " - " + $0.model }
-                    DevicePickerData.wrappedValue = PickerData
-                    selectedDevice.wrappedValue = PickerData.isEmpty ? "" : PickerData[0]
+    
+    // 获取android设备列表
+    private func getDeivces() {
+        Task(priority: .medium) {
+            do {
+                let output = try await ADB.adbDevices()
+                DispatchQueue.main.async {
+                    DeviceList = []
+                    if !output.isEmpty {
+                        DeviceList = output
+                        let PickerData: [String] = output.map { $0.serialno + " - " + $0.model }
+                        DevicePickerData = PickerData
+                        selectedDevice = PickerData.isEmpty ? "" : PickerData[0]
+                    }
                 }
-            }
-        } catch let error {
-            DispatchQueue.main.async {
-                let msg = getErrorMessage(etype: error as! AppError)
-                showAlertOnlyPrompt(title: "Error", msg: msg)
+            } catch let error as AppError {
+                DispatchQueue.main.async {
+                    message = error.description
+                    showMsgAlert = true
+                }
             }
         }
     }
 }
+
+
+
