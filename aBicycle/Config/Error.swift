@@ -48,3 +48,21 @@ enum AppError: Error, CustomStringConvertible {
         }
     }
 }
+
+// 示例函数：处理错误并提取自定义消息
+func parseAppError(_ error: AppError) -> String {
+    let lastMsg: String
+    switch error {
+    case .PathNotFound(let message):
+        if let message = message {
+            lastMsg = message.description
+        } else {
+            lastMsg = error.description
+        }
+    case .ExecutionFailed(let message):
+        lastMsg = message
+    default:
+        lastMsg = error.description
+    }
+    return lastMsg
+}

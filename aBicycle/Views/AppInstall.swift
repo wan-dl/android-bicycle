@@ -58,7 +58,7 @@ struct AppInstall: View {
     }
     
     var view_console_output: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Divider()
             ScrollView {
                 VStack(alignment: .leading, spacing: 5) {
@@ -113,12 +113,9 @@ struct AppInstall: View {
     }
     
     private func handlerError(error: AppError) {
+        let msg = parseAppError(error)
         DispatchQueue.main.async {
-            if case .ExecutionFailed(let output) = error {
-                messageList.append( getCurrentFormattedTime() + " " + output )
-            } else {
-                messageList.append( getCurrentFormattedTime() + " " + error.description )
-            }
+            messageList.append( getCurrentFormattedTime() + " " + msg )
         }
     }
 }

@@ -205,8 +205,9 @@ fileprivate final class AvdViewModel: ObservableObject {
     
     
     private func handlerError(error: AppError) {
+        let msg = parseAppError(error)
         DispatchQueue.main.async {
-            self.message = error.description
+            self.message = msg
             self.showMsgAlert = true
         }
     }
@@ -285,7 +286,6 @@ fileprivate final class AvdViewModel: ObservableObject {
             }
         }
     }
-    
    
     
     // 模拟器：停止杀死模拟器

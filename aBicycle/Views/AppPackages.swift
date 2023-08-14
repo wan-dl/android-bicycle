@@ -190,8 +190,9 @@ struct AppPackages: View {
     }
     
     private func handlerError(error: AppError) {
+        let msg = parseAppError(error)
         DispatchQueue.main.async {
-            message = error.description
+            message = msg
             showMsgAlert = true
         }
     }
