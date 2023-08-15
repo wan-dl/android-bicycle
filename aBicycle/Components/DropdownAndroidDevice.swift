@@ -22,6 +22,8 @@ struct DropdownAndroidDevice: View {
     @State private var message: String = ""
     @State private var showMsgAlert: Bool = false
     
+    @State private var isOnAppear: Bool = false
+    
     var body: some View {
         HStack {
             Image(systemName: "iphone.rear.camera")
@@ -45,10 +47,13 @@ struct DropdownAndroidDevice: View {
             view_popover
         }
         .onTapGesture {
-            self.isMenuVisible.toggle()
+            if !DeviceList.isEmpty {
+                self.isMenuVisible.toggle()
+            }
             getDevices()
         }
         .onAppear() {
+            isOnAppear = true
             getDevices()
         }
         .onChange(of: selectedDevice) { item in
@@ -128,7 +133,11 @@ struct DropdownAndroidDevice: View {
                     }
                 }
             } catch let error as AppError {
-                handlerError(error: error)
+                if isOnAppear {
+                    isOnAppear = false
+                } else {
+                    handlerError(error: error)
+                }
             }
         }
     }
