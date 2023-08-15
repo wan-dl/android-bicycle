@@ -1,5 +1,5 @@
 //
-//  AppInstall.swift
+//  AppInstallView.swift
 //  aBicycle
 //
 //  Created by 1 on 8/12/23.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct AppInstall: View {
+struct AppInstallView: View {
     @EnvironmentObject var GlobalVal: GlobalObservable
     
     @State private var currentSerialno: String = ""

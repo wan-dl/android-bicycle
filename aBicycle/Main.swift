@@ -13,6 +13,7 @@ enum SidebarNavName {
     case install
     case Emulator
     case AdbLogcat
+    case apkanalyzer
 }
 
 
@@ -53,8 +54,9 @@ struct MainView: View {
                                 
     var left_view: some View {
         VStack(alignment: .leading) {
-            sidebar(title: "应用管理", systemImage: "doc.plaintext", isActive: activeNav == .App, action: { self.activeNav = .App })
-            sidebar(title: "应用安装", systemImage: "doc.plaintext", isActive: activeNav == .install, action: { self.activeNav = .install })
+            sidebar(title: "Apk分析", systemImage: "waveform.and.magnifyingglass", isActive: activeNav == .apkanalyzer, action: { self.activeNav = .apkanalyzer })
+            sidebar(title: "应用管理", systemImage: "gearshape.2", isActive: activeNav == .App, action: { self.activeNav = .App })
+            sidebar(title: "应用安装", systemImage: "wrench.and.screwdriver", isActive: activeNav == .install, action: { self.activeNav = .install })
             sidebar(title: "Emulator", systemImage: "doc.plaintext", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
             //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
         }
@@ -65,13 +67,15 @@ struct MainView: View {
         Section {
             switch(self.activeNav) {
             case .App:
-                AppPackages()
+                AppPackagesView()
             case .install:
-                AppInstall()
+                AppInstallView()
             case .Emulator:
                 EmulatorView()
             case .AdbLogcat:
                 AdbLogcatView()
+            case .apkanalyzer:
+                ApkAnalyzerView()
             }
         }
     }

@@ -1,5 +1,5 @@
 //
-//  AppPackages.swift
+//  AppPackagesView.swift
 //  aBicycle
 //
 //  Created by 1 on 8/10/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppPackages: View {
+struct AppPackagesView: View {
     @EnvironmentObject var GlobalVal: GlobalObservable
     
     @State private var searchText: String = ""
