@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  aBicycle
+
+  Created by 1 on 8/16/23.
+  
+*/
+
+// Public
+"lproj_currentlyNoConnectedDevices" = "currently no connected devices";
+
+// Main.swift
+"lproj_NavAppInstall" = "Apk Install";
+"lproj_NavAppManagement" = "App Management";
+"lproj_NavEmulator" = "Emulator";
+"lproj_NavApkAnalyzer" = "Apk Analyzer";
+
+// DropdownAndroidDevice.swift
+"lproj_NoDevice" = "No Device";
+
+// AppInstallView.swift
+"lproj_selecteApkPrompt" = "Drag Apk files here or click to add Apk files";
+
+// AppPackagesView.swift
+"lproj_onlyShowThirdPartyPackages" = "only show third party packages";
+
+// EmulatorView.swift
+"lproj_menu_delete" = "删除";
+"lproj_menu_openFinder" = "打开Finder";

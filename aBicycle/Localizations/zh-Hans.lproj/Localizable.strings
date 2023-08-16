@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  aBicycle
+
+  Created by 1 on 8/16/23.
+  
+*/
+
+// Public
+"lproj_currentlyNoConnectedDevices" = "当前没有连接的设备";
+
+// Main.swift
+"lproj_NavAppInstall" = "Apk安装";
+"lproj_NavAppManagement" = "应用管理";
+"lproj_NavEmulator" = "模拟器管理";
+"lproj_NavApkAnalyzer" = "Apk分析";
+
+// DropdownAndroidDevice.swift
+"lproj_NoDevice" = "无设备";
+
+// AppInstallView.swift
+"lproj_selecteApkPrompt" = "拖入Apk文件到此、或点击添加Apk文件";
+
+// AppPackagesView.swift
+"lproj_onlyShowThirdPartyPackages" = "仅显示第三方安装包";
+
+// EmulatorView.swift
+"lproj_menu_delete" = "删除";
+"lproj_menu_openFinder" = "打开Finder";

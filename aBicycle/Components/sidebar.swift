@@ -33,7 +33,7 @@ struct sidebar: View {
         Button(action: {
             action()
         }, label: {
-            Label(title, systemImage: systemImage)
+            Label(LocalizedStringKey(title), systemImage: systemImage)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
         })

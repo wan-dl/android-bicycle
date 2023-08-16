@@ -140,13 +140,13 @@ struct EmulatorView: View {
     // 视图：更多按钮
     func view_more_button(item: AvdItem) -> some View {
         Menu {
-            Button("open Finder", action: {
+            Button("lproj_menu_openFinder", action: {
                 RevealInFinder(at: item.Path)
             })
             .disabled(item.Path == "" ? true : false)
             
             Divider()
-            Button("Delete", action: {
+            Button("lproj_menu_delete", action: {
                 deleteAvdName = item.Name
                 showDeleteAlert = true
             })
@@ -227,7 +227,6 @@ fileprivate final class AvdViewModel: ObservableObject {
                 }
                 await getStartedEmulator(allEmulator: output)
             } catch let error as AppError {
-                print("-2034-239423-04923-", error)
                 handlerError(error: error)
             }
         }

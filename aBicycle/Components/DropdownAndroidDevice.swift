@@ -37,7 +37,7 @@ struct DropdownAndroidDevice: View {
                     .font(.caption)
                     .foregroundColor(.gray)
                 } else {
-                    Text("No Device")
+                    Text("lproj_NoDevice")
                         .help("Click to get device")
                 }
             }

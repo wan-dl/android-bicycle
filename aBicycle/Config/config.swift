@@ -14,6 +14,8 @@ public let appSettingFileName: String = ".settings.json"
 // 应用程序设置是否发生改变
 public var isChangeAppSettingsValue: Bool = false
 
+// App默认语言: en | zh-Hans
+public var appDefaultLanguage: String = "zh-Hans"
 
 // 定义配置项：命令行工具名称和设置项的关联
 var SettingsConfigOptions: [String: String] = [

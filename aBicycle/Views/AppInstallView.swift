@@ -53,7 +53,7 @@ struct AppInstallView: View {
                 .labelStyle(.iconOnly)
                 .font(.title)
                 .padding(.bottom, 16)
-            Text("Drag Apk files here or click to add Apk files")
+            Text("lproj_selecteApkPrompt")
         }
     }
     

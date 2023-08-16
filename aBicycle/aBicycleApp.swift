@@ -16,6 +16,7 @@ struct aBicycleApp: App {
         WindowGroup {
             MainView()
                 .environmentObject(GlobalObservable())
+                .environment(\.locale, .init(identifier: appDefaultLanguage))
         }
         
         #if os(macOS)

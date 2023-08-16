@@ -92,14 +92,14 @@ struct AppPackagesView: View {
             }
             
             if currentSerialno.isEmpty {
-                EmptyView(text: "currently no connected devices")
+                EmptyView(text: "lproj_currentlyNoConnectedDevices")
             }
         }
     }
     
     var view_checkbox_for_third_package: some View {
         Toggle(isOn: $isOnlyShowThirdPackage) {
-            Label("only show third party packages", systemImage: "flag.fill")
+            Label("lproj_onlyShowThirdPartyPackages", systemImage: "flag.fill")
                 .labelStyle(.titleOnly)
         }
         .toggleStyle(.checkbox)

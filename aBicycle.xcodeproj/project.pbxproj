@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		630BF3042A85294700186FBF /* AppPackagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BF3032A85294700186FBF /* AppPackagesView.swift */; };
+		630FDFB82A8D1B000086E88F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 630FDFB62A8D1B000086E88F /* Localizable.strings */; };
+		630FDFBB2A8D1B0E0086E88F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 630FDFB92A8D1B0E0086E88F /* Localizable.strings */; };
 		63113C752A8872F0004F5500 /* utils_date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63113C742A8872F0004F5500 /* utils_date.swift */; };
 		6339F01A2A87D39D00A032D7 /* AppInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6339F0192A87D39D00A032D7 /* AppInstallView.swift */; };
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
@@ -42,6 +44,8 @@
 
 /* Begin PBXFileReference section */
 		630BF3032A85294700186FBF /* AppPackagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPackagesView.swift; sourceTree = "<group>"; };
+		630FDFB72A8D1B000086E88F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Localizable.strings; sourceTree = "<group>"; };
+		630FDFBA2A8D1B0E0086E88F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		63113C742A8872F0004F5500 /* utils_date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_date.swift; sourceTree = "<group>"; };
 		6339F0192A87D39D00A032D7 /* AppInstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallView.swift; sourceTree = "<group>"; };
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +91,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630FDFB32A8D1AB70086E88F /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				630FDFB52A8D1AF00086E88F /* en.lproj */,
+				630FDFB42A8D1AD60086E88F /* zh-Hans.lproj */,
+			);
+			path = Localizations;
+			sourceTree = "<group>";
+		};
+		630FDFB42A8D1AD60086E88F /* zh-Hans.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				630FDFB62A8D1B000086E88F /* Localizable.strings */,
+			);
+			path = "zh-Hans.lproj";
+			sourceTree = "<group>";
+		};
+		630FDFB52A8D1AF00086E88F /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				630FDFB92A8D1B0E0086E88F /* Localizable.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
 		63A81B992A7BF5EC00839E7B = {
 			isa = PBXGroup;
 			children = (
@@ -106,17 +135,18 @@
 		63A81BA42A7BF5ED00839E7B /* aBicycle */ = {
 			isa = PBXGroup;
 			children = (
-				63B27CCC2A85B97E00213B41 /* Components */,
-				63CD032C2A7F3B7F00E7F993 /* Config */,
-				63C236E12A7D50340019466C /* ViewsMenu */,
-				63A81BC02A7BF6DE00839E7B /* Views */,
-				63A81BB92A7BF68E00839E7B /* Utils */,
-				63A81BB42A7BF63600839E7B /* Extensions */,
+				63A81BAE2A7BF5EE00839E7B /* aBicycle.entitlements */,
 				63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */,
 				63A81BA72A7BF5ED00839E7B /* Main.swift */,
 				63A81BA92A7BF5EE00839E7B /* Assets.xcassets */,
-				63A81BAE2A7BF5EE00839E7B /* aBicycle.entitlements */,
+				63B27CCC2A85B97E00213B41 /* Components */,
+				63CD032C2A7F3B7F00E7F993 /* Config */,
+				63A81BB42A7BF63600839E7B /* Extensions */,
+				630FDFB32A8D1AB70086E88F /* Localizations */,
 				63A81BAB2A7BF5EE00839E7B /* Preview Content */,
+				63A81BB92A7BF68E00839E7B /* Utils */,
+				63A81BC02A7BF6DE00839E7B /* Views */,
+				63C236E12A7D50340019466C /* ViewsMenu */,
 			);
 			path = aBicycle;
 			sourceTree = "<group>";
@@ -240,6 +270,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 63A81B992A7BF5EC00839E7B;
 			productRefGroup = 63A81BA32A7BF5ED00839E7B /* Products */;
@@ -257,6 +288,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				63A81BAD2A7BF5EE00839E7B /* Preview Assets.xcassets in Resources */,
+				630FDFBB2A8D1B0E0086E88F /* Localizable.strings in Resources */,
+				630FDFB82A8D1B000086E88F /* Localizable.strings in Resources */,
 				63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +334,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		630FDFB62A8D1B000086E88F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				630FDFB72A8D1B000086E88F /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		630FDFB92A8D1B0E0086E88F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				630FDFBA2A8D1B0E0086E88F /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		63A81BAF2A7BF5EE00839E7B /* Debug */ = {
@@ -426,7 +478,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"aBicycle/Preview Content\"";
 				DEVELOPMENT_TEAM = 9RN855T24F;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -458,7 +510,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"aBicycle/Preview Content\"";
 				DEVELOPMENT_TEAM = 9RN855T24F;
 				ENABLE_HARDENED_RUNTIME = YES;
