@@ -54,10 +54,10 @@ struct MainView: View {
                                 
     var left_view: some View {
         VStack(alignment: .leading) {
-            sidebar(title: "Apk分析", systemImage: "waveform.and.magnifyingglass", isActive: activeNav == .apkanalyzer, action: { self.activeNav = .apkanalyzer })
-            sidebar(title: "应用管理", systemImage: "gearshape.2", isActive: activeNav == .App, action: { self.activeNav = .App })
+//            sidebar(title: "Apk分析", systemImage: "waveform.and.magnifyingglass", isActive: activeNav == .apkanalyzer, action: { self.activeNav = .apkanalyzer })
             sidebar(title: "应用安装", systemImage: "wrench.and.screwdriver", isActive: activeNav == .install, action: { self.activeNav = .install })
-            sidebar(title: "Emulator", systemImage: "doc.plaintext", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
+            sidebar(title: "应用管理", systemImage: "gearshape.2", isActive: activeNav == .App, action: { self.activeNav = .App })
+            sidebar(title: "Emulator", systemImage: "list.bullet.below.rectangle", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
             //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
         }
         .frame(maxWidth: .infinity, alignment: .leading)
