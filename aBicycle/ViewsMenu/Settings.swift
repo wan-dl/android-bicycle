@@ -11,13 +11,20 @@ struct SettingsView: View {
     
     private enum Tabs: Hashable {
         case general
+        case tools
     }
     
     var body: some View {
         TabView {
             SettingsGeneralView()
                 .tabItem {
-                    Label("General", systemImage: "gear")
+                    Label(LocalizedStringKey("lproj_setting_menu_General"), systemImage: "gear")
+                }
+                .tag(Tabs.general)
+            
+            SettingsToolsView()
+                .tabItem {
+                    Label(LocalizedStringKey("lproj_setting_menu_tool"), systemImage: "square.and.pencil")
                 }
                 .tag(Tabs.general)
         }

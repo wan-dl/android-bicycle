@@ -27,3 +27,8 @@
 // EmulatorView.swift
 "lproj_menu_delete" = "删除";
 "lproj_menu_openFinder" = "打开Finder";
+
+// Settings.swift
+"lproj_setting_menu_General" = "全局设置";
+"lproj_setting_menu_tool" = "工具路径设置";
+"lproj_setting_SelectLanguage" = "选择语言";

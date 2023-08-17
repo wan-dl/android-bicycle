@@ -12,6 +12,7 @@
 		630FDFBB2A8D1B0E0086E88F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 630FDFB92A8D1B0E0086E88F /* Localizable.strings */; };
 		63113C752A8872F0004F5500 /* utils_date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63113C742A8872F0004F5500 /* utils_date.swift */; };
 		6339F01A2A87D39D00A032D7 /* AppInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6339F0192A87D39D00A032D7 /* AppInstallView.swift */; };
+		639823872A8D99ED00F54045 /* SettingsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639823862A8D99ED00F54045 /* SettingsToolsView.swift */; };
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
 		63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* Main.swift */; };
 		63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BA92A7BF5EE00839E7B /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		630FDFBA2A8D1B0E0086E88F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		63113C742A8872F0004F5500 /* utils_date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_date.swift; sourceTree = "<group>"; };
 		6339F0192A87D39D00A032D7 /* AppInstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallView.swift; sourceTree = "<group>"; };
+		639823862A8D99ED00F54045 /* SettingsToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToolsView.swift; sourceTree = "<group>"; };
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aBicycleApp.swift; sourceTree = "<group>"; };
 		63A81BA72A7BF5ED00839E7B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				63CD032F2A7F3CF900E7F993 /* handleSettings.swift */,
 				63C236E22A7D505E0019466C /* Settings.swift */,
 				63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */,
+				639823862A8D99ED00F54045 /* SettingsToolsView.swift */,
 			);
 			path = ViewsMenu;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				63113C752A8872F0004F5500 /* utils_date.swift in Sources */,
 				63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
+				639823872A8D99ED00F54045 /* SettingsToolsView.swift in Sources */,
 				E574BCD22A85FEF300B48F2D /* DropdownAndroidDevice.swift in Sources */,
 				63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */,
 				E5F1446E2A82408300570B5A /* Error.swift in Sources */,
@@ -405,7 +409,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -459,7 +463,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
