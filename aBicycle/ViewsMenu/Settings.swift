@@ -30,6 +30,7 @@ struct SettingsView: View {
         }
         .padding(20)
         .frame(minWidth: 500, maxWidth: .infinity, minHeight: 300, alignment: .topLeading)
+        .environment(\.locale, .init(identifier: appDefaultLanguage))
     }
     
 }

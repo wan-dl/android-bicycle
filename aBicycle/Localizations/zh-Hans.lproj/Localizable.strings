@@ -32,3 +32,14 @@
 "lproj_setting_menu_General" = "全局设置";
 "lproj_setting_menu_tool" = "工具路径设置";
 "lproj_setting_SelectLanguage" = "选择语言";
+
+// SettingsGeneralView.swift
+"lproj_setting_general_fail_message" = "保存配置信息失败";
+
+// SettingsToolsView.swift
+"lproj_setting_path_hint" = "提示：如果此处您自定义了emulator和adb路径，会优先使用自定义配置。相反，则使用操作系统环境变量中已配置Android SDK环境变量";
+"lproj_setting_AndroidHome" = "Android SDK目录";
+"lproj_setting_ADBPath" = "ADB路径";
+"lproj_setting_emulatorPath" = "Emulator路径";
+"lproj_setting_avdmanagerPath" = "avdmanager路径";
+

@@ -32,6 +32,7 @@
 		63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032D2A7F3B8E00E7F993 /* config.swift */; };
 		63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD032F2A7F3CF900E7F993 /* handleSettings.swift */; };
 		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
+		63D076BF2A8E5312001180FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D076BE2A8E5312001180FB /* AppDelegate.swift */; };
 		63D4109B2A8A6DD300FDE83E /* SettingsGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */; };
 		63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FDD36C2A831B0300632CCA /* utils_os.swift */; };
 		E50338292A83694600EB85A0 /* style.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50338282A83694600EB85A0 /* style.swift */; };
@@ -71,6 +72,7 @@
 		63CD032D2A7F3B8E00E7F993 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		63CD032F2A7F3CF900E7F993 /* handleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSettings.swift; sourceTree = "<group>"; };
 		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
+		63D076BE2A8E5312001180FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralView.swift; sourceTree = "<group>"; };
 		63FDD36C2A831B0300632CCA /* utils_os.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_os.swift; sourceTree = "<group>"; };
 		E50338282A83694600EB85A0 /* style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = style.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			children = (
 				63A81BAE2A7BF5EE00839E7B /* aBicycle.entitlements */,
 				63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */,
+				63D076BE2A8E5312001180FB /* AppDelegate.swift */,
 				63A81BA72A7BF5ED00839E7B /* Main.swift */,
 				63A81BA92A7BF5EE00839E7B /* Assets.xcassets */,
 				63B27CCC2A85B97E00213B41 /* Components */,
@@ -326,6 +329,7 @@
 				63CD03302A7F3CF900E7F993 /* handleSettings.swift in Sources */,
 				63C121312A8AFA10008FE78D /* ApkAnalyzerView.swift in Sources */,
 				630BF3042A85294700186FBF /* AppPackagesView.swift in Sources */,
+				63D076BF2A8E5312001180FB /* AppDelegate.swift in Sources */,
 				63113C752A8872F0004F5500 /* utils_date.swift in Sources */,
 				63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,

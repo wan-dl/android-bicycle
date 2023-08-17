@@ -13,7 +13,7 @@ struct SettingsToolsView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("提示：如果此处您自定义了emulator和adb路径，会优先使用自定义配置。相反，则使用操作系统环境变量中已配置Android SDK环境变量，")
+            Text("lproj_setting_path_hint")
                 .font(.caption)
                 .padding(.bottom, 10)
             
@@ -32,28 +32,28 @@ struct SettingsToolsView: View {
     var view_form: some View {
         Form {
             TextField(text: $hset.ConfigAndroidHOME, prompt: Text("Android SDK目录")) {
-               Text("Android SDK目录")
+               Text("lproj_setting_AndroidHome")
             }
             .onSubmit {
                 hset.updateChange(key: "ConfigAndroidHOME", value: hset.ConfigAndroidHOME)
             }
             
             TextField(text: $hset.ConfigAvdmanagerPath, prompt: Text("avdmanager绝对路径，输入回车自动保存")) {
-               Text("avdmanager路径")
+               Text("lproj_setting_avdmanagerPath")
             }
             .onSubmit {
                 hset.updateChange(key: "ConfigAvdmanagerPath", value: hset.ConfigAvdmanagerPath)
             }
             
             TextField(text: $hset.ConfigEmulatorPath, prompt: Text("emulator绝对路径，输入回车自动保存")) {
-               Text("emulator路径")
+               Text("lproj_setting_emulatorPath")
             }
             .onSubmit {
                 hset.updateChange(key: "ConfigEmulatorPath", value: hset.ConfigEmulatorPath)
             }
             
             TextField(text: $hset.ConfigADBPath, prompt: Text("adb绝对路径，输入回车自动保存")) {
-               Text("ADB路径")
+               Text("lproj_setting_ADBPath")
             }
             .onSubmit {
                 hset.updateChange(key: "ConfigADBPath", value: hset.ConfigADBPath)

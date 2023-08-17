@@ -25,10 +25,22 @@
 "lproj_onlyShowThirdPartyPackages" = "only show third party packages";
 
 // EmulatorView.swift
-"lproj_menu_delete" = "删除";
-"lproj_menu_openFinder" = "打开Finder";
+"lproj_menu_delete" = "Delete";
+"lproj_menu_openFinder" = "open Finder";
 
 // Settings.swift
 "lproj_setting_menu_General" = "General";
 "lproj_setting_menu_tool" = "ToolPath";
 "lproj_setting_SelectLanguage" = "Select Language";
+
+// SettingsGeneralView.swift
+"lproj_setting_general_fail_message" = "Failed to save configuration information.";
+
+// SettingsToolsView.swift
+"lproj_setting_path_hint" = "Hint: If you have customized the emulator and adb paths here, they will be used preferentially. Conversely, if you haven't customized the paths, the Android SDK environment variables configured in the operating system will be used.";
+"lproj_setting_AndroidHome" = "Android SDK HOME";
+"lproj_setting_ADBPath" = "ADB Path";
+"lproj_setting_emulatorPath" = "Emulator Path";
+"lproj_setting_avdmanagerPath" = "avdmanager Path";
+
+

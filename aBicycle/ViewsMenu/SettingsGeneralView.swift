@@ -10,9 +10,16 @@ import SwiftUI
 
 struct SettingsGeneralView: View {
     
-    @State private var selectedLanguage = "en"
-    
     let languages = ["en", "zh-Hans"]
+    
+    @State var selectedLanguage: String
+    @State var message: String = ""
+    @State var showMsgAlert: Bool = false
+    
+    
+    init() {
+        self.selectedLanguage = appDefaultLanguage
+    }
     
     var body: some View {
         VStack {
@@ -24,13 +31,26 @@ struct SettingsGeneralView: View {
             .pickerStyle(.menu)
             .focusable(false)
             .onChange(of: selectedLanguage) { newIndex in
-                
+                updateAppLanguage()
             }
         }
         .padding()
+        .alert("提示", isPresented: $showMsgAlert) {
+            Button("关闭", role: .cancel) { }
+        } message: {
+            Text(message)
+        }
     }
     
-    func updateAppLanguage(newLanguage: String) {
+    func updateAppLanguage() {
+        do {
+            _ = try SettingsHandler.writeJsonFile(key: "appDefaultLanguage", value: selectedLanguage)
+        } catch {
+            DispatchQueue.main.async {
+                showMsgAlert = true
+                message = NSLocalizedString("lproj_setting_general_fail_message", comment: "")
+            }
+        }
     }
     
 }

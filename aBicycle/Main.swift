@@ -50,6 +50,7 @@ struct MainView: View {
                 }
             }
         }
+        .environment(\.locale, .init(identifier: appDefaultLanguage))
     }
                                 
     var left_view: some View {
