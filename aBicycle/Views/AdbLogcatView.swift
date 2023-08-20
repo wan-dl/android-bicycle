@@ -14,19 +14,17 @@ enum LogcatOptionPriority: String, CaseIterable, Identifiable {
 }
 
 struct AdbLogcatView: View {
-    
-    @StateObject private var logcat = AdbLogcat()
-    @State private var logcatOutput: String = ""
-    
-    @State private var AndroidDeviceList: [AndroidDeviceItem] = []
-    @State private var AndroidDevicePickerData: [String] = [""]
-    
+    @EnvironmentObject var GlobalVal: GlobalObservable
     @State private var currentSerialno: String = ""
+    
+    @StateObject var logcat = AdbLogcat()
+    
+    @State private var logcatOutput: AttributedString = AttributedString("")
+
     @State private var currentDeviceAllPackageList: [String] = [""]
     
     @State private var isLaunchLogcat: Bool = false
     
-    @State private var selectedDevice: String = ""
     @State private var selectedPriority: LogcatOptionPriority = .All
     @State private var selectedPackageName: String = ""
     
@@ -39,18 +37,35 @@ struct AdbLogcatView: View {
             
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
-                    Text(logcatOutput)
+                    VStack(alignment: .leading) {
+                        Text(logcatOutput)
+                            .textSelection(.enabled)
+                            .lineSpacing(3)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 15)
                 }
+                
             }
         }
-        .padding(.vertical, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
-        .contextMenu {
-            contextMenu_view
+        .contextMenu {}
+        .onAppear() {
+            self.currentSerialno = GlobalVal.currentSerialno
         }
-        .task {
-            getDeivces()
+        .onChange(of: GlobalVal.currentSerialno) { value in
+            self.currentSerialno = value
+            
+        }
+        .onChange(of: currentSerialno) { value in
+            if !self.currentSerialno.isEmpty {
+                getCurrentDevicePackageList()
+            }
+            if self.currentSerialno.isEmpty && self.isLaunchLogcat == true {
+                self.isLaunchLogcat.toggle()
+                logcat.stop()
+            }
         }
         .alert("提示", isPresented: $showMsgAlert) {
             Button("关闭", role: .cancel) { }
@@ -61,18 +76,6 @@ struct AdbLogcatView: View {
     
     var top_view: some View {
         HStack {
-            // 选择设备
-            Picker("", selection: $selectedDevice) {
-                ForEach(AndroidDevicePickerData, id: \.self) { device in
-                    Text(device)
-                }
-            }
-            .pickerStyle(.menu)
-            .onChange(of: selectedDevice) { newValue in
-                parseCurrentSerialno()
-                getCurrentDevicePackageList()
-            }
-            
             // 选择包名
             Picker("", selection: $selectedPackageName) {
                 ForEach(currentDeviceAllPackageList, id: \.self) { item in
@@ -97,43 +100,14 @@ struct AdbLogcatView: View {
             Button(action: clickLogcat) {
                 Text( isLaunchLogcat ? "Stop" : "Start" )
             }
-            .disabled(selectedDevice.isEmpty ? true : false)
-        }
-        .padding(.horizontal, 20)
-    }
-    
-    // 右键菜单
-    var contextMenu_view: some View {
-        Section {
-            Button("Refresh Device") {
-                getDeivces()
+            .disabled(currentSerialno.isEmpty ? true : false)
+            
+            Button("Clear") {
+                logcatOutput = AttributedString("")
             }
-            Divider()
+            .disabled(logcatOutput == "" ? true : false)
         }
-    }
-    
-    // 获取android设备列表
-    func getDeivces() {
-        Task(priority: .medium) {
-            do {
-                let output = try await ADB.adbDevices()
-                DispatchQueue.main.async {
-                    self.AndroidDeviceList = []
-                    if !output.isEmpty {
-                        self.AndroidDeviceList = output
-                        self.AndroidDevicePickerData = []
-                        for i in output {
-                            AndroidDevicePickerData.append(i.serialno + " - " + i.model)
-                        }
-                        if !AndroidDevicePickerData.isEmpty {
-                            self.selectedDevice = AndroidDevicePickerData[0]
-                        }
-                    }
-                }
-            } catch let error as AppError {
-                handlerError(error: error)
-            }
-        }
+        .padding(20)
     }
     
     // 获取当前设备包名
@@ -154,26 +128,11 @@ struct AdbLogcatView: View {
         }
     }
     
-    // 解析设备ID
-    func parseCurrentSerialno() {
-        if #available(macOS 13.0, *) {
-            let SerialInfo = self.selectedDevice.split(separator: " - ")
-            if let firstComponent = SerialInfo.first {
-                self.currentSerialno = String(firstComponent)
-            }
-        } else {
-            let SerialInfo = self.selectedDevice.components(separatedBy: " - ")
-            if let firstComponent = SerialInfo.first {
-                self.currentSerialno = String(firstComponent)
-            }
-        }
-    }
-    
     // 点击运行adb logcat
     func clickLogcat() {
         Task {
             if self.isLaunchLogcat == false {
-                if self.AndroidDeviceList.isEmpty {
+                if self.currentSerialno.isEmpty {
                     return
                 }
                 
@@ -206,7 +165,7 @@ struct AdbLogcatView: View {
         logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
             .sink { output in
-                self.logcatOutput += output
+                self.logcatOutput += AttributedString(output)
             }
             .store(in: &logcat.cancellables)
     }

@@ -59,7 +59,7 @@ struct MainView: View {
             sidebar(title: "lproj_NavAppInstall", systemImage: "wrench.and.screwdriver", isActive: activeNav == .install, action: { self.activeNav = .install })
             sidebar(title: "lproj_NavAppManagement", systemImage: "gearshape.2", isActive: activeNav == .App, action: { self.activeNav = .App })
             sidebar(title: "lproj_NavEmulator", systemImage: "list.bullet.below.rectangle", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
-            //sidebar(title: "Adb Logcat", systemImage: "doc.plaintext", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
+            sidebar(title: "Adb Logcat", systemImage: "doc.text", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

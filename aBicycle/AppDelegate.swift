@@ -51,6 +51,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         menu.addItem(withTitle: "Quit", action: #selector(quitApp), keyEquivalent: "q")
         statusBarItem?.menu = menu
     }
+    
+    // 在应用关闭时执行的方法
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        print("-->", AdbLogcat().stop())
+        print("App is closing. Perform cleanup here.")
+        return .terminateNow
+    }
 
     @objc func openApp() {
         NSApp.activate(ignoringOtherApps: true)

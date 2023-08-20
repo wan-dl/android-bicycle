@@ -143,10 +143,11 @@ class ADB {
 }
 
 
+var globalAdbLogcatTask: Process?
+
 class AdbLogcat: ObservableObject {
     @Published var logcatOutput: String = ""
     
-    private var task: Process?
     private var fileHandle: FileHandle?
     internal var cancellables = Set<AnyCancellable>()
     private var throttledSubject = PassthroughSubject<String, Never>()
@@ -162,8 +163,7 @@ class AdbLogcat: ObservableObject {
     }
 
     func run(serialno: String, logcatOptions: [String]) async throws {
-        
-        var args: [String] = ["-s", serialno, "logcat", "-v", "color"]
+        var args: [String] = ["-s", serialno, "logcat"]
         if !logcatOptions.isEmpty {
             args.append(contentsOf: logcatOptions)
         }
@@ -179,14 +179,12 @@ class AdbLogcat: ObservableObject {
         
         do {
             try task.run()
-            self.task = task
+            globalAdbLogcatTask = task
             
-            DispatchQueue.global(qos: .background).async {
-                self.fileHandle?.readabilityHandler = { fileHandle in
-                    let data = fileHandle.availableData
-                    if let output = String(data: data, encoding: .utf8) {
-                        self.throttledSubject.send(output)
-                    }
+            fileHandle?.readabilityHandler = { [weak self] fileHandle in
+                let data = fileHandle.availableData
+                if let output = String(data: data, encoding: .utf8) {
+                    self?.throttledSubject.send(output)
                 }
             }
         } catch {
@@ -195,7 +193,7 @@ class AdbLogcat: ObservableObject {
     }
     
     func stop() {
-        self.task?.terminate()
+        globalAdbLogcatTask?.terminate()
+        globalAdbLogcatTask = nil
     }
 }
-
