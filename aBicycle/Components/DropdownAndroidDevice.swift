@@ -23,6 +23,7 @@ struct DropdownAndroidDevice: View {
     @State private var showMsgAlert: Bool = false
     
     @State private var isOnAppear: Bool = false
+    @State private var isRefresh: Bool = false
     
     var body: some View {
         HStack {
@@ -41,6 +42,7 @@ struct DropdownAndroidDevice: View {
                         .help("Click to get device")
                 }
             }
+            view_refresh_btn
         }
         .frame(width: 170, alignment: .trailing)
         .popover(isPresented: $isMenuVisible, arrowEdge: .bottom) {
@@ -59,15 +61,8 @@ struct DropdownAndroidDevice: View {
         .onChange(of: selectedDevice) { item in
             GlobalVal.currentSerialno = item.serialno
         }
-        .onChange(of: GlobalVal.isEmulatorStop) { value in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                getDevices()
-            }
-        }
-        .onChange(of: GlobalVal.isEmulatorStart) { value in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
-                getDevices()
-            }
+        .onChange(of: [GlobalVal.isEmulatorStop, GlobalVal.isEmulatorStart]) { values in
+            scheduleDelayedGetDevices(attempts: 3)
         }
         .alert("提示", isPresented: $showMsgAlert) {
             Button("关闭", role: .cancel) { }
@@ -107,15 +102,22 @@ struct DropdownAndroidDevice: View {
     
     var view_ref_contextMenu: some View {
         Label("", systemImage: "ellipsis.circle")
-            .contextMenu {
-            }
+            .contextMenu {}
     }
     
-    // 打开下拉列表
-    private func open(refname: String) {
-        DispatchQueue.main.async {
-            isMenuVisible = false
-        }
+    var view_refresh_btn: some View {
+        Button(action: {
+            DispatchQueue.main.async {
+                isRefresh.toggle()
+            }
+            getDevices()
+        }, label: {
+            Image(systemName: "arrow.triangle.2.circlepath")
+                .rotationEffect(.degrees(isRefresh ? 360 : 0))
+                .animation(Animation.linear(duration: 2), value: isRefresh)
+                .help("Fetch")
+        })
+        .buttonStyle(PlainButtonStyle())
     }
     
     // 获取android设备列表
@@ -130,6 +132,7 @@ struct DropdownAndroidDevice: View {
                         DeviceList = output
                         let _: [String] = output.map { $0.serialno + " - " + $0.model }
                         selectedDevice = output[0]
+                        isRefresh.toggle()
                     }
                 }
             } catch let error as AppError {
@@ -142,6 +145,7 @@ struct DropdownAndroidDevice: View {
         }
     }
     
+    // 错误处理
     private func handlerError(error: AppError) {
         let msg = parseAppError(error)
         DispatchQueue.main.async {
@@ -149,6 +153,19 @@ struct DropdownAndroidDevice: View {
             showMsgAlert = true
         }
     }
+    
+    // adb devices获取数据，会有延迟，推迟3秒，执行3次
+    func scheduleDelayedGetDevices(attempts: Int) {
+        guard attempts > 0 else {
+            return
+        }
+        
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
+            getDevices()
+            scheduleDelayedGetDevices(attempts: attempts - 1)
+        }
+    }
+
 }
 
 
