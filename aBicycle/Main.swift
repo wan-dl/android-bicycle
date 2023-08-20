@@ -24,7 +24,7 @@ struct MainView: View {
     
     @State var isShowSilder: Bool = true
     
-    @State var activeNav: SidebarNavName = .install
+    @State var activeNav: SidebarNavName = .apkanalyzer
     
     var body: some View {
         HSplitView {

@@ -155,20 +155,6 @@ fileprivate final class GetApk: ObservableObject {
             return false
         }
     }
-    
-    func openAPKFilePicker(completion: @escaping (String?) -> Void) {
-        let openPanel = NSOpenPanel()
-        openPanel.title = "Choose an APK File"
-        openPanel.allowedFileTypes = ["apk"]
-//        openPanel.allowedContentTypes = []
-        openPanel.allowsMultipleSelection = false
-
-        if openPanel.runModal() == .OK, let url = openPanel.url {
-            completion(url.path)
-        } else {
-            completion(nil)
-        }
-    }
 }
 
 

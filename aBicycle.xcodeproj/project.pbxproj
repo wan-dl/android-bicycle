@@ -13,6 +13,7 @@
 		63113C752A8872F0004F5500 /* utils_date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63113C742A8872F0004F5500 /* utils_date.swift */; };
 		6339F01A2A87D39D00A032D7 /* AppInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6339F0192A87D39D00A032D7 /* AppInstallView.swift */; };
 		639823872A8D99ED00F54045 /* SettingsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639823862A8D99ED00F54045 /* SettingsToolsView.swift */; };
+		639AE9752A91F6A3007AB6C8 /* ApkFilesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639AE9742A91F6A3007AB6C8 /* ApkFilesList.swift */; };
 		63A81BA62A7BF5ED00839E7B /* aBicycleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */; };
 		63A81BA82A7BF5ED00839E7B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A81BA72A7BF5ED00839E7B /* Main.swift */; };
 		63A81BAA2A7BF5EE00839E7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63A81BA92A7BF5EE00839E7B /* Assets.xcassets */; };
@@ -34,6 +35,8 @@
 		63CD03322A7F3D8000E7F993 /* utils_json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD03312A7F3D8000E7F993 /* utils_json.swift */; };
 		63D076BF2A8E5312001180FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D076BE2A8E5312001180FB /* AppDelegate.swift */; };
 		63D4109B2A8A6DD300FDE83E /* SettingsGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */; };
+		63DB193E2A8E5EE3008D1F5C /* SelecteLocalFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DB193D2A8E5EE3008D1F5C /* SelecteLocalFile.swift */; };
+		63DB19402A8E64E3008D1F5C /* cmd_apkanalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DB193F2A8E64E3008D1F5C /* cmd_apkanalyzer.swift */; };
 		63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FDD36C2A831B0300632CCA /* utils_os.swift */; };
 		E50338292A83694600EB85A0 /* style.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50338282A83694600EB85A0 /* style.swift */; };
 		E574BCD22A85FEF300B48F2D /* DropdownAndroidDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574BCD12A85FEF300B48F2D /* DropdownAndroidDevice.swift */; };
@@ -51,6 +54,7 @@
 		63113C742A8872F0004F5500 /* utils_date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_date.swift; sourceTree = "<group>"; };
 		6339F0192A87D39D00A032D7 /* AppInstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallView.swift; sourceTree = "<group>"; };
 		639823862A8D99ED00F54045 /* SettingsToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToolsView.swift; sourceTree = "<group>"; };
+		639AE9742A91F6A3007AB6C8 /* ApkFilesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApkFilesList.swift; sourceTree = "<group>"; };
 		63A81BA22A7BF5ED00839E7B /* aBicycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aBicycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A81BA52A7BF5ED00839E7B /* aBicycleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aBicycleApp.swift; sourceTree = "<group>"; };
 		63A81BA72A7BF5ED00839E7B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 		63CD03312A7F3D8000E7F993 /* utils_json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_json.swift; sourceTree = "<group>"; };
 		63D076BE2A8E5312001180FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63D4109A2A8A6DD300FDE83E /* SettingsGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralView.swift; sourceTree = "<group>"; };
+		63DB193D2A8E5EE3008D1F5C /* SelecteLocalFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelecteLocalFile.swift; sourceTree = "<group>"; };
+		63DB193F2A8E64E3008D1F5C /* cmd_apkanalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmd_apkanalyzer.swift; sourceTree = "<group>"; };
 		63FDD36C2A831B0300632CCA /* utils_os.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils_os.swift; sourceTree = "<group>"; };
 		E50338282A83694600EB85A0 /* style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = style.swift; sourceTree = "<group>"; };
 		E574BCD12A85FEF300B48F2D /* DropdownAndroidDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownAndroidDevice.swift; sourceTree = "<group>"; };
@@ -177,14 +183,15 @@
 			isa = PBXGroup;
 			children = (
 				63A81BBC2A7BF6BA00839E7B /* cmd_adb.swift */,
+				63DB193F2A8E64E3008D1F5C /* cmd_apkanalyzer.swift */,
 				E5F144692A82388200570B5A /* cmd_avdmanager.swift */,
 				63A81BBA2A7BF6A600839E7B /* cmd_emulator.swift */,
 				E5F1446B2A823C2F00570B5A /* command_manager.swift */,
 				63A81BBE2A7BF6D000839E7B /* run_command.swift */,
-				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
-				63BBF67F2A7F541E00C2621B /* utis_path.swift */,
-				63FDD36C2A831B0300632CCA /* utils_os.swift */,
 				63113C742A8872F0004F5500 /* utils_date.swift */,
+				63CD03312A7F3D8000E7F993 /* utils_json.swift */,
+				63FDD36C2A831B0300632CCA /* utils_os.swift */,
+				63BBF67F2A7F541E00C2621B /* utis_path.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -197,6 +204,7 @@
 				6339F0192A87D39D00A032D7 /* AppInstallView.swift */,
 				630BF3032A85294700186FBF /* AppPackagesView.swift */,
 				63A81BC32A7BF71800839E7B /* EmulatorView.swift */,
+				639AE9742A91F6A3007AB6C8 /* ApkFilesList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +217,7 @@
 				63B27CCD2A85B9B500213B41 /* PickerAndroidDevice.swift */,
 				E574BCD12A85FEF300B48F2D /* DropdownAndroidDevice.swift */,
 				E574BCD32A86008A00B48F2D /* SearchTextField.swift */,
+				63DB193D2A8E5EE3008D1F5C /* SelecteLocalFile.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -308,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63A81BC42A7BF71800839E7B /* EmulatorView.swift in Sources */,
+				63DB193E2A8E5EE3008D1F5C /* SelecteLocalFile.swift in Sources */,
 				63B27CCE2A85B9B500213B41 /* PickerAndroidDevice.swift in Sources */,
 				E50338292A83694600EB85A0 /* style.swift in Sources */,
 				63A81BB82A7BF67400839E7B /* EmptyView.swift in Sources */,
@@ -334,7 +344,9 @@
 				63FDD36D2A831B0400632CCA /* utils_os.swift in Sources */,
 				63A81BBD2A7BF6BA00839E7B /* cmd_adb.swift in Sources */,
 				639823872A8D99ED00F54045 /* SettingsToolsView.swift in Sources */,
+				639AE9752A91F6A3007AB6C8 /* ApkFilesList.swift in Sources */,
 				E574BCD22A85FEF300B48F2D /* DropdownAndroidDevice.swift in Sources */,
+				63DB19402A8E64E3008D1F5C /* cmd_apkanalyzer.swift in Sources */,
 				63CD032E2A7F3B8E00E7F993 /* config.swift in Sources */,
 				E5F1446E2A82408300570B5A /* Error.swift in Sources */,
 				63A81BB62A7BF64500839E7B /* sidebar.swift in Sources */,
@@ -486,7 +498,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"aBicycle/Preview Content\"";
 				DEVELOPMENT_TEAM = 9RN855T24F;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -500,7 +512,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.3;
+				MARKETING_VERSION = 0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wan.aBicycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -518,7 +530,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"aBicycle/Preview Content\"";
 				DEVELOPMENT_TEAM = 9RN855T24F;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -532,7 +544,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.3;
+				MARKETING_VERSION = 0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wan.aBicycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

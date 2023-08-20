@@ -24,3 +24,23 @@ struct avdBootButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0) // 按钮按下时缩小
     }
 }
+
+// ApkAnalyzerView.swift
+struct apkTabButtonStyle: ButtonStyle {
+    var BtnText: ApkDataTab
+    @Binding var ActiveTab: ApkDataTab
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.self.label
+            .padding(5)
+            .font(.callout)
+            .background(BtnText == ActiveTab ? Color.blue.opacity(0.1) : Color.clear)
+            .foregroundColor(BtnText == ActiveTab ? Color.blue.opacity(0.8) : .black)
+            .cornerRadius(6)
+//            .onHover { isHovered in
+//                isHover = isHovered ? avd_name : ""
+//            }
+            .opacity(configuration.isPressed ? 0.8 : 1.0) // 按钮按下时降低不透明度
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0) // 按钮按下时缩小
+    }
+}

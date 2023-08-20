@@ -44,3 +44,7 @@
 "lproj_setting_avdmanagerPath" = "avdmanager Path";
 
 
+// ApkAnalyzerView.swift
+"lproj_apk_analyzer_select_btn" = "select";
+"lproj_apk_analyzer_btn" = "analyzer";
+

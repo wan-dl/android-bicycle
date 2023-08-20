@@ -43,3 +43,6 @@
 "lproj_setting_emulatorPath" = "Emulator路径";
 "lproj_setting_avdmanagerPath" = "avdmanager路径";
 
+// ApkAnalyzerView.swift
+"lproj_apk_analyzer_select_btn" = "选择";
+"lproj_apk_analyzer_btn" = "分析";

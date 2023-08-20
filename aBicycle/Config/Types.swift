@@ -37,3 +37,4 @@ struct AppPackageInfo: Identifiable, Hashable {
     let name: String
     let id = UUID()
 }
+
