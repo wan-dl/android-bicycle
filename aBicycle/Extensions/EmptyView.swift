@@ -19,7 +19,7 @@ struct EmptyView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             Spacer()
             Image("android")
                 .resizable()
@@ -29,7 +29,6 @@ struct EmptyView: View {
                 .foregroundColor(.gray)
             Spacer()
         }
-        .frame(height: 300)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
         .contextMenu {

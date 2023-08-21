@@ -30,9 +30,9 @@ struct MainView: View {
         HSplitView {
             if isShowSilder {
                 left_view
-                    .padding()
-                    .frame(width: 240, alignment: .topLeading)
-                    .frame(minWidth: 200, maxWidth: 240, minHeight: 200 ,maxHeight: .infinity, alignment: .topLeading)
+                    .padding(.top, 20)
+                    .frame(width: 240)
+                    .frame(minWidth: 240, maxWidth: 300, minHeight: 200 ,maxHeight: .infinity, alignment: .topLeading)
                     .background(.gray.opacity(0.01))
             }
             right_view
@@ -58,10 +58,9 @@ struct MainView: View {
             sidebar(title: "lproj_NavApkAnalyzer", systemImage: "waveform.and.magnifyingglass", isActive: activeNav == .apkanalyzer, action: { self.activeNav = .apkanalyzer })
             sidebar(title: "lproj_NavAppInstall", systemImage: "wrench.and.screwdriver", isActive: activeNav == .install, action: { self.activeNav = .install })
             sidebar(title: "lproj_NavAppManagement", systemImage: "gearshape.2", isActive: activeNav == .App, action: { self.activeNav = .App })
-            sidebar(title: "lproj_NavEmulator", systemImage: "list.bullet.below.rectangle", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
             sidebar(title: "Adb Logcat", systemImage: "doc.text", isActive: activeNav == .AdbLogcat, action: { self.activeNav = .AdbLogcat })
+            sidebar(title: "lproj_NavEmulator", systemImage: "list.bullet.below.rectangle", isActive: activeNav == .Emulator, action: { self.activeNav = .Emulator })
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     var right_view: some View {
