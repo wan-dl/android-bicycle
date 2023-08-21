@@ -24,6 +24,7 @@ struct SearchTextField: View {
                 }, label: {
                     Label("",systemImage: "xmark.circle.fill")
                         .labelStyle(.iconOnly)
+                        .foregroundColor(.black.opacity(0.5))
                 })
                 .buttonStyle(.plain)
                 //.padding(.trailing, 10)

@@ -31,7 +31,9 @@ struct SelecteLocalFile: View {
                 }, label: {
                     Label("",systemImage: "xmark.circle.fill")
                         .labelStyle(.iconOnly)
+                        .foregroundColor(.black.opacity(0.5))
                 })
+                .offset(x: -10)
                 .buttonStyle(.plain)
                 .disabled(isDoing)
             }
