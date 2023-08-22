@@ -17,6 +17,7 @@ struct SelecteLocalFile: View {
             TextField("Selecte Local APK File", text: $filepath)
                 .textFieldStyle(PlainTextFieldStyle())
                 .disabled(isDoing)
+                .modifier(ClearButton(text: $filepath))
                 .overlay(
                         Rectangle()
                             .frame(height: 1)
@@ -24,19 +25,7 @@ struct SelecteLocalFile: View {
                             .foregroundColor(.gray.opacity(0.3))
                     )
             
-            
-            if !filepath.isEmpty {
-                Button(action: {
-                    self.filepath = ""
-                }, label: {
-                    Label("",systemImage: "xmark.circle.fill")
-                        .labelStyle(.iconOnly)
-                        .foregroundColor(.black.opacity(0.5))
-                })
-                .offset(x: -10)
-                .buttonStyle(.plain)
-                .disabled(isDoing)
-            }
+            Spacer()
             
             Button("lproj_apk_analyzer_select_btn") {
                 selectedApk()
@@ -55,3 +44,25 @@ struct SelecteLocalFile: View {
     }
 }
 
+
+fileprivate struct ClearButton: ViewModifier {
+    @Binding var text: String
+
+    public func body(content: Content) -> some View {
+        ZStack(alignment: .trailing) {
+            content
+
+            if !text.isEmpty {
+                Button(action: {
+                    self.text = ""
+                }) {
+                    Label("", systemImage: "xmark.circle.fill")
+                        .labelStyle(.iconOnly)
+                        .foregroundColor(.black.opacity(0.5))
+                }
+                .padding(.trailing, 8)
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}

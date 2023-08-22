@@ -31,8 +31,8 @@ struct ApkAnalyzerView: View {
             HStack {
                 SelecteLocalFile(filepath: $apkFilePath, isDoing: $isDoing)
                 view_analyze_btn
-                
             }
+            .frame(height: 25)
             .padding(.horizontal, 15)
             .padding(.top, 20)
             
