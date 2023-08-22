@@ -165,7 +165,25 @@ struct AdbLogcatView: View {
         logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
             .sink { output in
-                self.logcatOutput += AttributedString(output)
+                var logText = AttributedString(output)
+                if var rangeW = logText.range(of: " W/") {
+                    if let rangeNewline = logText[rangeW.upperBound...].range(of: "\n") {
+                        let startIndex = rangeW.lowerBound
+                        let endIndex = rangeNewline.lowerBound
+                        rangeW = startIndex..<endIndex
+                    }
+                    logText[rangeW].foregroundColor = .orange
+                }
+                if var rangeE = logText.range(of: " E/") {
+                    if let rangeNewline = logText[rangeE.upperBound...].range(of: "\n") {
+                        let startIndex = rangeE.lowerBound
+                        let endIndex = rangeNewline.lowerBound
+                        rangeE = startIndex..<endIndex
+                    }
+                    logText[rangeE].foregroundColor = .red
+                }
+
+                self.logcatOutput += logText
             }
             .store(in: &logcat.cancellables)
     }

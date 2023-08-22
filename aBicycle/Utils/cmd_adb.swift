@@ -163,7 +163,7 @@ class AdbLogcat: ObservableObject {
     }
 
     func run(serialno: String, logcatOptions: [String]) async throws {
-        var args: [String] = ["-s", serialno, "logcat"]
+        var args: [String] = ["-s", serialno, "logcat", "-v", "time"]
         if !logcatOptions.isEmpty {
             args.append(contentsOf: logcatOptions)
         }
