@@ -165,27 +165,32 @@ struct AdbLogcatView: View {
         logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
             .sink { output in
-                var logText = AttributedString(output)
-                if var rangeW = logText.range(of: " W/") {
-                    if let rangeNewline = logText[rangeW.upperBound...].range(of: "\n") {
-                        let startIndex = rangeW.lowerBound
-                        let endIndex = rangeNewline.lowerBound
-                        rangeW = startIndex..<endIndex
+                let lines = output.split(separator: "\n")
+                for line in lines {
+                    if line.contains(" W/") {
+                        self.logcatOutput += highlightLogText(String(line)+"\n", " W/", .orange.opacity(0.8))
+                    } else if line.contains(" E/") {
+                        self.logcatOutput += highlightLogText(String(line)+"\n", " E/", .red)
+                    } else {
+                        let logText = AttributedString(line+"\n")
+                        self.logcatOutput += logText
                     }
-                    logText[rangeW].foregroundColor = .orange
                 }
-                if var rangeE = logText.range(of: " E/") {
-                    if let rangeNewline = logText[rangeE.upperBound...].range(of: "\n") {
-                        let startIndex = rangeE.lowerBound
-                        let endIndex = rangeNewline.lowerBound
-                        rangeE = startIndex..<endIndex
-                    }
-                    logText[rangeE].foregroundColor = .red
-                }
-
-                self.logcatOutput += logText
             }
             .store(in: &logcat.cancellables)
+    }
+    
+    private func highlightLogText(_ output: String, _ logLevel: String, _ textColor: Color) -> AttributedString {
+        var logText = AttributedString(output)
+        if var rangeW = logText.range(of: logLevel) {
+            if let rangeNewline = logText[rangeW.upperBound...].range(of: "\n") {
+                let startIndex = rangeW.lowerBound
+                let endIndex = rangeNewline.lowerBound
+                rangeW = startIndex..<endIndex
+            }
+            logText[rangeW].foregroundColor = textColor
+        }
+        return logText
     }
     
     private func handlerError(error: AppError) {
