@@ -30,6 +30,5 @@ struct SearchTextField: View {
                 //.padding(.trailing, 10)
             }
         }
-        .padding(.top, 20)
     }
 }

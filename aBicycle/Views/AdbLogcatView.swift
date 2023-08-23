@@ -27,6 +27,7 @@ struct AdbLogcatView: View {
     
     @State private var selectedPriority: LogcatOptionPriority = .All
     @State private var selectedPackageName: String = ""
+    @State private var filterWord: String = ""
     
     @State private var message: String = ""
     @State private var showMsgAlert: Bool = false
@@ -77,15 +78,15 @@ struct AdbLogcatView: View {
     var top_view: some View {
         HStack {
             // 选择包名
-            Picker("", selection: $selectedPackageName) {
-                ForEach(currentDeviceAllPackageList, id: \.self) { item in
-                    if item == "No..." {
-                        Divider()
-                    }
-                    Text(item)
-                }
-            }
-            .pickerStyle(.menu)
+//            Picker("", selection: $selectedPackageName) {
+//                ForEach(currentDeviceAllPackageList, id: \.self) { item in
+//                    if item == "No..." {
+//                        Divider()
+//                    }
+//                    Text(item)
+//                }
+//            }
+//            .pickerStyle(.menu)
             
             // 选择日志包名
             Picker("", selection: $selectedPriority) {
@@ -94,6 +95,12 @@ struct AdbLogcatView: View {
                 }
             }
             .pickerStyle(.menu)
+            .frame(width: 80)
+            
+//            TextField("Filter Log", text: $filterWord)
+//                .textFieldStyle(.roundedBorder)
+//                .focusable(false)
+            SearchTextField(text: $filterWord)
             
             Spacer()
             
@@ -137,15 +144,15 @@ struct AdbLogcatView: View {
                 }
                 
                 var logcatOptions: [String] = []
+                
                 if self.selectedPriority.rawValue != "All" {
                     if let priority = self.selectedPriority.rawValue.first {
-                        logcatOptions.append("':\(String(priority))'")
+                        logcatOptions.append("*:\(String(priority))")
                     }
                 }
-                if self.selectedPackageName.contains(".") {
-                    logcatOptions.append("-s")
-                    logcatOptions.append(self.selectedPackageName)
-                }
+//                if self.selectedPackageName.contains(".") {
+//                    logcatOptions.append(self.selectedPackageName)
+//                }
                 
                 self.isLaunchLogcat.toggle()
                 do {
@@ -161,12 +168,18 @@ struct AdbLogcatView: View {
         }
     }
     
+    // 获取日志输出
     func observeLogcatOutput() {
         logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
             .sink { output in
                 let lines = output.split(separator: "\n")
                 for line in lines {
+                    if !self.filterWord.isEmpty && !isStringAllWhitespace(String(line)){
+                        if !line.contains(filterWord) {
+                            continue
+                        }
+                    }
                     if line.contains(" W/") {
                         self.logcatOutput += highlightLogText(String(line)+"\n", " W/", .orange.opacity(0.8))
                     } else if line.contains(" E/") {
@@ -180,6 +193,7 @@ struct AdbLogcatView: View {
             .store(in: &logcat.cancellables)
     }
     
+    // 高亮日志文本消息
     private func highlightLogText(_ output: String, _ logLevel: String, _ textColor: Color) -> AttributedString {
         var logText = AttributedString(output)
         if var rangeW = logText.range(of: logLevel) {
@@ -191,6 +205,12 @@ struct AdbLogcatView: View {
             logText[rangeW].foregroundColor = textColor
         }
         return logText
+    }
+    
+    // 判断字符串是否全是空格
+    func isStringAllWhitespace(_ input: String) -> Bool {
+        let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty
     }
     
     private func handlerError(error: AppError) {

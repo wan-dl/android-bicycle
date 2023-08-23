@@ -42,9 +42,11 @@ struct AppPackagesView: View {
         VStack(alignment: .leading) {
             Section {
                 SearchTextField(text: $searchText)
+                    
                 view_checkbox_for_third_package
             }
             .padding(.horizontal, 15)
+            .padding(.top, 20)
             
             if !filteredPackageData.isEmpty {
                 view_app_package_list
@@ -103,7 +105,6 @@ struct AppPackagesView: View {
                 .labelStyle(.titleOnly)
         }
         .toggleStyle(.checkbox)
-        .padding([.top], 15)
         .onChange(of: isOnlyShowThirdPackage) { val in
             getDeviceAllPackage()
         }
