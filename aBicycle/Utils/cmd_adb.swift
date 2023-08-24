@@ -154,8 +154,9 @@ class AdbLogcat: ObservableObject {
     
     init() {
         throttledSubject
-            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
-            .removeDuplicates()
+//            .debounce(for: .milliseconds(1), scheduler: DispatchQueue.main)
+//            .debounce(for: .milliseconds(1), scheduler: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] output in
                 self?.logcatOutput = output
             }
@@ -163,32 +164,37 @@ class AdbLogcat: ObservableObject {
     }
 
     func run(serialno: String, logcatOptions: [String]) async throws {
-        var args: [String] = ["-s", serialno, "logcat", "-v", "time"]
-        if !logcatOptions.isEmpty {
-            args.append(contentsOf: logcatOptions)
-        }
-        
-        let adbPath = try await ADB.getAdbPath()
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: adbPath)
-        task.arguments = args
-        
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        self.fileHandle = pipe.fileHandleForReading
-        
-        do {
-            try task.run()
-            globalAdbLogcatTask = task
-            
-            fileHandle?.readabilityHandler = { [weak self] fileHandle in
-                let data = fileHandle.availableData
-                if let output = String(data: data, encoding: .utf8) {
-                    self?.throttledSubject.send(output)
+        Task {
+            do {
+                var args: [String] = ["-s", serialno, "logcat", "-v", "time"]
+                if !logcatOptions.isEmpty {
+                    args.append(contentsOf: logcatOptions)
+                }
+                print("[adb logcat] args: \(args)")
+                
+                let adbPath = try await ADB.getAdbPath()
+                let task = Process()
+                task.executableURL = URL(fileURLWithPath: adbPath)
+                task.arguments = args
+                
+                let pipe = Pipe()
+                task.standardOutput = pipe
+                self.fileHandle = pipe.fileHandleForReading
+                
+                do {
+                    try task.run()
+                    globalAdbLogcatTask = task
+                    
+                    fileHandle?.readabilityHandler = { [weak self] fileHandle in
+                        let data = fileHandle.availableData
+                        if let output = String(data: data, encoding: .utf8) {
+                            self?.throttledSubject.send(output)
+                        }
+                    }
+                } catch {
+                    throw error
                 }
             }
-        } catch {
-            throw error
         }
     }
     

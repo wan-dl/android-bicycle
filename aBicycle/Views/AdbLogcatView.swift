@@ -20,9 +20,8 @@ struct AdbLogcatView: View {
     @StateObject var logcat = AdbLogcat()
     
     @State private var logcatOutput: AttributedString = AttributedString("")
-
-    @State private var currentDeviceAllPackageList: [String] = [""]
     
+    @State private var currentDeviceAllPackageList: [String] = [""]
     @State private var isLaunchLogcat: Bool = false
     
     @State private var selectedPriority: LogcatOptionPriority = .All
@@ -37,17 +36,22 @@ struct AdbLogcatView: View {
             top_view
             
             ScrollViewReader { scrollViewProxy in
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        Text(logcatOutput)
-                            .textSelection(.enabled)
-                            .lineSpacing(3)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 15)
-                }
-                
-            }
+               ScrollView {
+                   LazyVStack (alignment: .leading) {
+                       Text(logcatOutput)
+                           .textSelection(.enabled)
+                           .lineSpacing(3)
+//                           .onChange(of: logcatOutput) { newValue in
+//                               withAnimation {
+//                                   scrollViewProxy.scrollTo(logcatOutput, anchor: .bottom)
+//                               }
+//                           }
+                       
+                   }
+                   .padding(.horizontal, 20)
+                   .padding(.vertical, 15)
+               }
+           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
@@ -97,9 +101,6 @@ struct AdbLogcatView: View {
             .pickerStyle(.menu)
             .frame(width: 80)
             
-//            TextField("Filter Log", text: $filterWord)
-//                .textFieldStyle(.roundedBorder)
-//                .focusable(false)
             SearchTextField(text: $filterWord)
             
             Spacer()
@@ -150,14 +151,11 @@ struct AdbLogcatView: View {
                         logcatOptions.append("*:\(String(priority))")
                     }
                 }
-//                if self.selectedPackageName.contains(".") {
-//                    logcatOptions.append(self.selectedPackageName)
-//                }
                 
                 self.isLaunchLogcat.toggle()
                 do {
                     try await logcat.run(serialno: currentSerialno, logcatOptions: logcatOptions)
-                    observeLogcatOutput()
+                    await observeLogcatOutput()
                 } catch {
                     print("Error: \(error)")
                 }
@@ -169,41 +167,40 @@ struct AdbLogcatView: View {
     }
     
     // 获取日志输出
-    func observeLogcatOutput() {
-        logcat.$logcatOutput
+    func observeLogcatOutput() async {
+        await logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
+//            .debounce(for: .milliseconds(1), scheduler: DispatchQueue.global(qos: .background))
             .sink { output in
                 let lines = output.split(separator: "\n")
+                var processedOutput = AttributedString("")
+                
                 for line in lines {
-                    if !self.filterWord.isEmpty && !isStringAllWhitespace(String(line)){
+                    if !filterWord.isEmpty && !isStringAllWhitespace(String(line)){
                         if !line.contains(filterWord) {
                             continue
                         }
                     }
-                    if line.contains(" W/") {
-                        self.logcatOutput += highlightLogText(String(line)+"\n", " W/", .orange.opacity(0.8))
+                    let lintText = String(line) + "\n"
+                    if lintText.contains(" W/") {
+                        processedOutput += highlightLogText(lintText, .orange.opacity(0.8))
                     } else if line.contains(" E/") {
-                        self.logcatOutput += highlightLogText(String(line)+"\n", " E/", .red)
+                        processedOutput += highlightLogText(lintText, .red)
                     } else {
-                        let logText = AttributedString(line+"\n")
-                        self.logcatOutput += logText
+                        processedOutput += AttributedString(lintText)
                     }
+                }
+                DispatchQueue.main.async {
+                    self.logcatOutput += processedOutput
                 }
             }
             .store(in: &logcat.cancellables)
     }
     
     // 高亮日志文本消息
-    private func highlightLogText(_ output: String, _ logLevel: String, _ textColor: Color) -> AttributedString {
+    private func highlightLogText(_ output: String, _ textColor: Color) -> AttributedString {
         var logText = AttributedString(output)
-        if var rangeW = logText.range(of: logLevel) {
-            if let rangeNewline = logText[rangeW.upperBound...].range(of: "\n") {
-                let startIndex = rangeW.lowerBound
-                let endIndex = rangeNewline.lowerBound
-                rangeW = startIndex..<endIndex
-            }
-            logText[rangeW].foregroundColor = textColor
-        }
+        logText.foregroundColor = textColor
         return logText
     }
     
