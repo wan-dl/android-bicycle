@@ -199,7 +199,17 @@ class AdbLogcat: ObservableObject {
     }
     
     func stop() {
-        globalAdbLogcatTask?.terminate()
-        globalAdbLogcatTask = nil
+        Task {
+            globalAdbLogcatTask?.terminate()
+            globalAdbLogcatTask = nil
+            
+            // 取消订阅
+            cancellables.forEach { $0.cancel() }
+            cancellables.removeAll()
+            
+            // 关闭文件处理器
+            fileHandle?.closeFile()
+            fileHandle = nil
+        }
     }
 }
