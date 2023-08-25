@@ -13,3 +13,10 @@ func getCurrentFormattedTime() -> String {
     let currentTime = Date()
     return dateFormatter.string(from: currentTime)
 }
+
+// 格式化当前日期
+func formatDateTime(date: Date, format: String) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    return dateFormatter.string(from: date)
+}

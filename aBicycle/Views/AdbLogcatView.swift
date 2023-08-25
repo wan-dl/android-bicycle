@@ -20,9 +20,11 @@ struct AdbLogcatView: View {
     @StateObject var logcat = AdbLogcat()
     
     @State private var logcatOutput: AttributedString = AttributedString("")
+    @State private var lastText: AttributedString = AttributedString("")
     
     @State private var currentDeviceAllPackageList: [String] = [""]
     @State private var isLaunchLogcat: Bool = false
+    @State private var isFirstGetLog: Bool = false
     
     @State private var selectedPriority: LogcatOptionPriority = .All
     @State private var selectedPackageName: String = ""
@@ -31,8 +33,10 @@ struct AdbLogcatView: View {
     @State private var message: String = ""
     @State private var showMsgAlert: Bool = false
     
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             top_view
             
             ScrollViewReader { scrollViewProxy in
@@ -70,6 +74,12 @@ struct AdbLogcatView: View {
             if self.currentSerialno.isEmpty && self.isLaunchLogcat == true {
                 self.isLaunchLogcat.toggle()
                 logcat.stop()
+            }
+        }
+        .onReceive(timer) { _ in
+            DispatchQueue.main.async {
+                self.logcatOutput += self.lastText
+                self.lastText = ""
             }
         }
         .alert("提示", isPresented: $showMsgAlert) {
@@ -145,7 +155,6 @@ struct AdbLogcatView: View {
                 }
                 
                 var logcatOptions: [String] = []
-                
                 if self.selectedPriority.rawValue != "All" {
                     if let priority = self.selectedPriority.rawValue.first {
                         logcatOptions.append("*:\(String(priority))")
@@ -155,7 +164,7 @@ struct AdbLogcatView: View {
                 self.isLaunchLogcat.toggle()
                 do {
                     try await logcat.run(serialno: currentSerialno, logcatOptions: logcatOptions)
-                    await observeLogcatOutput()
+                    observeLogcatOutput()
                 } catch {
                     print("Error: \(error)")
                 }
@@ -167,20 +176,21 @@ struct AdbLogcatView: View {
     }
     
     // 获取日志输出
-    func observeLogcatOutput() async {
-        await logcat.$logcatOutput
+    func observeLogcatOutput() {
+        logcat.$logcatOutput
             .receive(on: DispatchQueue.main)
-//            .debounce(for: .milliseconds(1), scheduler: DispatchQueue.global(qos: .background))
             .sink { output in
                 let lines = output.split(separator: "\n")
                 var processedOutput = AttributedString("")
                 
                 for line in lines {
+                    
                     if !filterWord.isEmpty && !isStringAllWhitespace(String(line)){
                         if !line.contains(filterWord) {
                             continue
                         }
                     }
+                    
                     let lintText = String(line) + "\n"
                     if lintText.contains(" W/") {
                         processedOutput += highlightLogText(lintText, .orange.opacity(0.8))
@@ -190,8 +200,11 @@ struct AdbLogcatView: View {
                         processedOutput += AttributedString(lintText)
                     }
                 }
-                DispatchQueue.main.async {
-                    self.logcatOutput += processedOutput
+                // 不输出10s之前的日志
+                if isPrintLog(from: output) {
+                    DispatchQueue.main.async {
+                        lastText += processedOutput
+                    }
                 }
             }
             .store(in: &logcat.cancellables)
@@ -217,4 +230,38 @@ struct AdbLogcatView: View {
             showMsgAlert = true
         }
     }
+}
+
+// 检查日志消息时间，来决定是否输出
+fileprivate func isPrintLog(from input: String) -> Bool {
+    let dateRegexPattern = #"(\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})"#
+    guard let match = input.range(of: dateRegexPattern, options: .regularExpression) else {
+        return false
+    }
+
+    let extracted = input[match]
+    let extractedParts = extracted.split(separator: " ")
+
+    let formattedDatePart = formatDateTime(date: Date(), format: "MM-dd")
+    let formattedTimePart = formatDateTime(date: Date(), format: "HH:mm:ss")
+
+    guard extractedParts.count == 2,
+          let extractedDate = extractedParts.first,
+          let extractedTime = extractedParts.last else {
+        return false
+    }
+
+    if extractedDate != formattedDatePart {
+        return false
+    }
+
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm:ss"
+    if let currentTime = dateFormatter.date(from: formattedTimePart),
+        let extractedTime = dateFormatter.date(from: String(extractedTime)),
+        currentTime.timeIntervalSince(extractedTime) < 10 {
+        return true
+    }
+
+    return false
 }
