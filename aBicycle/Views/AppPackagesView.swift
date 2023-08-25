@@ -16,7 +16,7 @@ struct AppPackagesView: View {
     @State private var selectedItemId: String = ""
     @State private var selectedItem: String = ""
     
-    @State private var isOnlyShowThirdPackage: Bool = false
+    @State private var isOnlyShowThirdPackage: Bool = true
     
     @State private var currentSerialno: String = ""
     @State private var currentDeviceAllPackageRawData: [AppPackageInfo] = []
