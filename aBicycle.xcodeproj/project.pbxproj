@@ -152,6 +152,7 @@
 				63A81BA92A7BF5EE00839E7B /* Assets.xcassets */,
 				63B27CCC2A85B97E00213B41 /* Components */,
 				63CD032C2A7F3B7F00E7F993 /* Config */,
+				63EEB0DF2AA0234200A5304F /* Docs */,
 				63A81BB42A7BF63600839E7B /* Extensions */,
 				630FDFB32A8D1AB70086E88F /* Localizations */,
 				63A81BAB2A7BF5EE00839E7B /* Preview Content */,
@@ -241,6 +242,13 @@
 				E5F1446F2A82459700570B5A /* Types.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		63EEB0DF2AA0234200A5304F /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Docs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
