@@ -21,7 +21,7 @@ struct AndroidDeviceItem: Identifiable, Hashable {
 }
 
 // 用于avdmanager list avd输出
-struct AvdItem: Identifiable {
+struct AvdItem: Equatable, Identifiable {
     var Name: String
     var Version: String = ""
     var ABI: String = ""

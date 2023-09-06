@@ -13,7 +13,9 @@ class GlobalObservable: ObservableObject {
     @Published var currentSerialno: String = ""
     @Published var isEmulatorStart: Int = 0
     @Published var isEmulatorStop: Int = 0
+    
     @Published var AvdList: [AvdItem] = []
+    @Published var activeAvdList: [String] = []
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {

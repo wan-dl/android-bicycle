@@ -27,11 +27,11 @@ struct EmulatorView: View {
     
     var body: some View {
         ScrollView {
-            if viewModel.emulatorList.isEmpty {
+            if GlobalVal.AvdList.isEmpty {
                 EmptyView(text: "No Emulator")
             }
             
-            if (viewModel.emulatorList.count != 0) {
+            if (GlobalVal.AvdList.count != 0) {
                 VStack {
                     view_show_emulator_list
                 }
@@ -46,8 +46,16 @@ struct EmulatorView: View {
             }
         }
         .task {
-            viewModel.getEmulatorList()
-            viewModel.getAvdmanagerList()
+            if GlobalVal.AvdList.isEmpty {
+                viewModel.getEmulatorList()
+                viewModel.getAvdmanagerList()
+            }
+        }
+        .onChange(of: viewModel.emulatorList) { val in
+            GlobalVal.AvdList = val
+        }
+        .onChange(of: viewModel.activeEmulatorList) { val in
+            GlobalVal.activeAvdList = val
         }
         .contextMenu {
             view_context_menu
@@ -61,19 +69,19 @@ struct EmulatorView: View {
     
     // 视图：展示模拟器列表数据
     var view_show_emulator_list: some View {
-        ForEach(viewModel.emulatorList) { item in
+        ForEach(GlobalVal.AvdList) { item in
             HStack() {
                 Label("", systemImage: "circle.fill")
                     .font(.caption2)
                     .labelStyle(.iconOnly)
-                    .foregroundColor(viewModel.activeEmulatorList.contains(item.Name) ? Color.green : Color.clear)
+                    .foregroundColor(GlobalVal.activeAvdList.contains(item.Name) ? Color.green : Color.clear)
                 Image("android")
                     .resizable()
                     .frame(width: 24, height: 24)
                 view_show_avd_info(item: item)
                 Spacer()
                 HStack {
-                    if viewModel.activeEmulatorList.contains(item.Name) {
+                    if GlobalVal.activeAvdList.contains(item.Name) {
                         view_boot_button(action_name: "stop", avd_name: item.Name)
                     } else {
                         view_boot_button(action_name: "start", avd_name: item.Name)
