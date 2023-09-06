@@ -10,13 +10,13 @@ import SwiftUI
 struct AppPackagesView: View {
     @EnvironmentObject var GlobalVal: GlobalObservable
     
+    @AppStorage("isOnlyShowThirdPackage") var isOnlyShowThirdPackage = true
+    
     @State private var searchText: String = ""
     
     @State private var hoverItem: String = ""
     @State private var selectedItemId: String = ""
     @State private var selectedItem: String = ""
-    
-    @State private var isOnlyShowThirdPackage: Bool = true
     
     @State private var currentSerialno: String = ""
     @State private var currentDeviceAllPackageRawData: [AppPackageInfo] = []
